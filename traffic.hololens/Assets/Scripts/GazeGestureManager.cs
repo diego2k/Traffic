@@ -55,6 +55,15 @@ public class GazeGestureManager : MonoBehaviour
         // start detecting fresh gestures again.
         if (FocusedObject != oldFocusObject)
         {
+            Debug.Log(FocusedObject.tag);
+            if (FocusedObject.tag == "Last_Left")
+            {
+                BroadcastMessage("OnShowRight", SendMessageOptions.DontRequireReceiver);
+            }
+            if (FocusedObject.tag == "Last_Right")
+            {
+                BroadcastMessage("OnShowLeft", SendMessageOptions.DontRequireReceiver);
+            }
             //FocusedObject.SetActive(false);
             FocusedObject.SendMessageUpwards("OnLookAt", SendMessageOptions.DontRequireReceiver);
             //recognizer.CancelGestures();

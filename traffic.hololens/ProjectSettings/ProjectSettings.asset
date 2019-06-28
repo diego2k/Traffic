@@ -551,11 +551,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: traffic.hololens
   metroPackageVersion: 
-  metroCertificatePath: 
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: DefaultCompany
+  metroCertificateIssuer: DefaultCompany
+  metroCertificateNotAfter: 00740a853247d601
   metroApplicationDescription: traffic.hololens
   wsaImages: {}
   metroTileShortName: 

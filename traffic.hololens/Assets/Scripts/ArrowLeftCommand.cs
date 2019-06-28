@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrowCommands : MonoBehaviour
+public class ArrowLeftCommand : MonoBehaviour
 {
-    void OnLookAt()
+    void OnShowLeft()
     {
         var meshRenderer = this.gameObject.GetComponentInChildren<MeshRenderer>();
-        meshRenderer.enabled = false;
+        meshRenderer.enabled = true;
         var boxCollider = this.gameObject.GetComponentInChildren<BoxCollider>();
-        boxCollider.enabled = false;
-
-        //this.gameObject.SetActive(false);
+        boxCollider.enabled = true;
     }
-
 }
