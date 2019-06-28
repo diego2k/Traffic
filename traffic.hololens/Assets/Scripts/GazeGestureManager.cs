@@ -53,6 +53,7 @@ public class GazeGestureManager : MonoBehaviour
 
         // If the focused object changed this frame,
         // start detecting fresh gestures again.
+        if (FocusedObject == null) return;
         if (FocusedObject != oldFocusObject)
         {
             Debug.Log(FocusedObject.tag);
