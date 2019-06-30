@@ -63,7 +63,7 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
                 }
                 break;
             default:
-                break;
+                return;
 
         }
 

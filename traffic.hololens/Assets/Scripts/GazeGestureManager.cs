@@ -10,6 +10,11 @@ public class GazeGestureManager : MonoBehaviour
 
     GestureRecognizer recognizer;
 
+    private static int Count = 0;
+
+    public GameObject traffic;
+
+
     // Use this for initialization
     void Awake()
     {
@@ -63,7 +68,15 @@ public class GazeGestureManager : MonoBehaviour
             }
             if (FocusedObject.tag == "Last_Right")
             {
-                BroadcastMessage("OnShowLeft", SendMessageOptions.DontRequireReceiver);
+                Debug.Log("Intaration count: " + Count);
+                if (Count++ < 2)
+                {
+                    BroadcastMessage("OnShowLeft", SendMessageOptions.DontRequireReceiver);
+                }
+                else
+                {
+                    traffic.SetActive(true);
+                }
             }
             //FocusedObject.SetActive(false);
             FocusedObject.SendMessageUpwards("OnLookAt", SendMessageOptions.DontRequireReceiver);
