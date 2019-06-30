@@ -30,7 +30,7 @@ namespace HoloToolkit.Unity
             FocusManager.AssertIsInitialized();
             Debug.Assert(Canvas != null);
 
-            if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace && FocusManager.Instance != null)
+            if (Canvas.isRootCanvas && Canvas.renderMode == RenderMode.WorldSpace)
             {
                 Canvas.worldCamera = FocusManager.Instance.UIRaycastCamera;
             }
