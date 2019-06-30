@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlaneSpeechHandler : MonoBehaviour, ISpeechHandler
 {
     public GameObject nextDialog;
-    private bool _isTrafficSeen = false;
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
@@ -20,11 +19,13 @@ public class PlaneSpeechHandler : MonoBehaviour, ISpeechHandler
         if (command == "traffic")
         {
             Debug.Log("User has decided.");
-            _isTrafficSeen = true;
+            BroadcastMessage("SetHUDTextCenter", "Decide now!");
         }
-        else if (command == "decided" && _isTrafficSeen)
+        else if (command == "decided")
         {
             Debug.Log("User has seen traffic.");
+            BroadcastMessage("SetHUDTextCenter", "");
+
             this.gameObject.SetActive(false);
             nextDialog.SetActive(true);
         }

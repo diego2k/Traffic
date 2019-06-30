@@ -4,37 +4,22 @@ using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using HoloToolkit.Unity;
+using System.Collections;
 
-public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
+public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
 {
-    enum State { None, Collision, RightOfWay }
-    public Text Answer;
-
-    public Button button1;
-    public Button button2;
-    public Button button3;
-    public Button button4;
-    public Button button5;
-    public Button button6;
-    public Text help;
-    public GameObject help2;
-
-    public Button finish;
     private Button activeButton;
 
+    public Text Answer;
+    public Button button1;
+    public Button button2;
     public Sprite check;
     public Sprite cross;
-
     public GameObject nextDialog;
-
-
-    private State CurrentState;
 
     public void Start()
     {
-        CurrentState = State.None;
     }
-
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
@@ -88,7 +73,7 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
                 }
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.LogError(ex.Message);
         }
@@ -136,14 +121,13 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
 
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Debug.Log("1");
-            CurrentState = State.RightOfWay;
-            Debug.Log("2");
-            var wait = new WaitForSeconds(5);
-            Debug.Log("3");
 
-            this.gameObject.SetActive(false);
-            Debug.Log("4");
-            nextDialog.SetActive(true);
+            Wait(3, () =>
+            {
+                this.gameObject.SetActive(false);
+                Debug.Log("4");
+                nextDialog.SetActive(true);
+            });
 
         }
         catch (Exception ex)
@@ -155,6 +139,18 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
     public int GetCorrectAnswer()
     {
         return 1;
+    }
+
+
+    public void Wait(float seconds, Action action)
+    {
+        StartCoroutine(_wait(seconds, action));
+    }
+
+    IEnumerator _wait(float time, Action callback)
+    {
+        yield return new WaitForSeconds(time);
+        callback();
     }
 
     public void validateAnswers()
