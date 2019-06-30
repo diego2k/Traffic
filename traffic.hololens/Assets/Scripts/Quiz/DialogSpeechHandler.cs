@@ -7,6 +7,9 @@ using HoloToolkit.Unity;
 
 public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
 {
+    enum State { None, Collision, RightOfWay }
+    public Text Answer;
+
     public Button button1;
     public Button button2;
     public Button button3;
@@ -22,11 +25,14 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
     public Sprite check;
     public Sprite cross;
 
+    public GameObject nextDialog;
+
+
+    private State CurrentState;
+
     public void Start()
     {
-        Debug.Log("TestSpeechTest starte.");
-        // help.enabled = false;
-        // help2.SetActive(false);
+        CurrentState = State.None;
     }
 
 
@@ -39,17 +45,20 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
 
     public void SpeechCommands(string command)
     {
+        int answer = 0;
         switch (command)
         {
             case "yes":
                 {
-                    transform.position += Vector3.forward;
+                    answer = 1;
+                    //transform.position += Vector3.forward;
                     activeButton = button1;
                 }
                 break;
             case "no":
                 {
-                    transform.position += Vector3.back;
+                    answer = 2;
+                    //transform.position += Vector3.back;
                     activeButton = button2;
                 }
                 break;
@@ -58,6 +67,7 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
 
         }
 
+        // Mark choise
         try
         {
             Image image = activeButton.GetComponent<Image>();
@@ -78,10 +88,73 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
                 }
             }
         }
-        catch (Exception e)
+        catch(Exception ex)
         {
+            Debug.LogError(ex.Message);
+        }
+
+        // Check Answer
+        try
+        {
+            int result = GetCorrectAnswer();
+
+            /*Debug.Log("1");
+            var checkSprite = Resources.Load<Sprite>("check");
+            var crossSprite = Resources.Load<Sprite>("cross");
+            Debug.Log("2");
+
+            var ch1 = GameObject.Find("Image 1").GetComponent<Image>();
+            var ch2 = GameObject.Find("Image 2").GetComponent<Image>();
+            var ch3 = GameObject.Find("Image 3").GetComponent<Image>();
+            Debug.Log("3");
+
+            ch1.enabled = true;
+            ch1.sprite = crossSprite;
+            ch2.enabled = true;
+            ch2.sprite = crossSprite;
+            ch3.enabled = true;
+            ch3.sprite = crossSprite;
+            Debug.Log("4");
+
+            Debug.Log("5");
+            switch (result)
+            {
+                case 1:
+                    ch1.enabled = true;
+                    ch1.sprite = checkSprite;
+                    break;
+                case 2:
+                    ch2.enabled = true;
+                    ch2.sprite = checkSprite;
+                    break;
+                case 3:
+                    ch3.enabled = true;
+                    ch3.sprite = checkSprite;
+                    break;
+            }
+            Debug.Log("6");*/
+
+            Answer.text = (answer == result) ? "Correct" : "Wrong";
+            Debug.Log("1");
+            CurrentState = State.RightOfWay;
+            Debug.Log("2");
+            var wait = new WaitForSeconds(5);
+            Debug.Log("3");
+
+            this.gameObject.SetActive(false);
+            Debug.Log("4");
+            nextDialog.SetActive(true);
 
         }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
+    }
+
+    public int GetCorrectAnswer()
+    {
+        return 1;
     }
 
     public void validateAnswers()
@@ -89,11 +162,7 @@ public class DialogSpeechHandler : MonoBehaviour, ISpeechHandler
         var ch1 = GameObject.Find("Image 1").GetComponent<Image>();
         var ch2 = GameObject.Find("Image 2").GetComponent<Image>();
         var ch3 = GameObject.Find("Image 3").GetComponent<Image>();
-        var ch4 = GameObject.Find("Image 4").GetComponent<Image>();
-        var ch5 = GameObject.Find("Image 5").GetComponent<Image>();
-        var ch6 = GameObject.Find("Image 6").GetComponent<Image>();
-        var text = GameObject.Find("Question").GetComponent<Text>();
-        var finish = GameObject.Find("Finish").GetComponentInChildren<Text>();
+
 
         //UserScore = 0;
         //temporary
