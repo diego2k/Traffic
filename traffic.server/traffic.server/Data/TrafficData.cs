@@ -5,6 +5,8 @@ namespace traffic.server.Data
 {
     public class TrafficData
     {
+        private const int HEADER_SIZE = 4;
+
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public double Altitude { get; set; }
@@ -13,6 +15,8 @@ namespace traffic.server.Data
 
         public TrafficData(byte[] data)
         {
+            Buffer.BlockCopy(data, HEADER_SIZE, data, 0, data.Length - HEADER_SIZE);
+
             byte[] dataValidity = new byte[1];
             byte[] longitude = new byte[4];
             byte[] latitude = new byte[4];
@@ -21,7 +25,7 @@ namespace traffic.server.Data
             byte[] rollAngle = new byte[4];
             Buffer.BlockCopy(data, 18, dataValidity, 0, 1);
 
-            if((dataValidity[0] & 206) == 206)
+            if ((dataValidity[0] & 206) != 206)
             {
                 throw new Exception("Traffic data invalid!");
             }
