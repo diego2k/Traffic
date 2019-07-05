@@ -4,14 +4,13 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 
-public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
+public class DialogAvoidSpeechHandler : MonoBehaviour, ISpeechHandler
 {
     private Button activeButton;
 
     public Text Answer;
     public Button button1;
     public Button button2;
-    public GameObject nextDialog;
     public GameObject compass;
 
     public void Start()
@@ -30,13 +29,13 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
         int answer = 0;
         switch (command)
         {
-            case "yes":
+            case "left":
                 {
                     answer = 1;
                     activeButton = button1;
                 }
                 break;
-            case "no":
+            case "right":
                 {
                     answer = 2;
                     activeButton = button2;
@@ -61,11 +60,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
             Wait(3, () =>
             {
                 this.gameObject.SetActive(false);
-
-                if (result == 1)
-                    nextDialog.SetActive(true);
-                else
-                    compass.SetActive(true);
+                compass.SetActive(true);
             });
 
         }
@@ -90,5 +85,4 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
         yield return new WaitForSeconds(time);
         callback();
     }
-
 }
