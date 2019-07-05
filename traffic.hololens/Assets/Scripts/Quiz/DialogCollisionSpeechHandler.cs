@@ -16,6 +16,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
     public Sprite check;
     public Sprite cross;
     public GameObject nextDialog;
+    public GameObject compass;
 
     public void Start()
     {
@@ -25,6 +26,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
     {
         if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
         Debug.Log("OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        BroadcastMessage("ChangeHUDTextCenter", "BOOOOOOM");
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
@@ -36,14 +38,12 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
             case "yes":
                 {
                     answer = 1;
-                    //transform.position += Vector3.forward;
                     activeButton = button1;
                 }
                 break;
             case "no":
                 {
                     answer = 2;
-                    //transform.position += Vector3.back;
                     activeButton = button2;
                 }
                 break;
@@ -66,7 +66,11 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
             Wait(3, () =>
             {
                 this.gameObject.SetActive(false);
-                nextDialog.SetActive(true);
+
+                if (result == 1)
+                    nextDialog.SetActive(true);
+                else
+                    compass.SetActive(true);
             });
 
         }
