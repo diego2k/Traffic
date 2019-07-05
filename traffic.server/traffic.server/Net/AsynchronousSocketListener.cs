@@ -1,9 +1,11 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using traffic.server.Messages;
 
 namespace traffic.server.Net
 {
@@ -27,6 +29,7 @@ namespace traffic.server.Net
 
     public class AsynchronousSocketListener
     {
+        private int _port = 0;
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         public static Dictionary<string, string> dict = new Dictionary<string, string>();
         private static Socket handler;
@@ -36,59 +39,43 @@ namespace traffic.server.Net
         {
         }
 
-        public void StartAsync(int port)
+        public void StartListening(int port)
         {
-            Thread th = new Thread(() =>
-            {
-                try
-                {
-                    StartListening(port);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            });
-            th.Start();
-        }
-
-        private void StartListening(int port)
-        {
+            _port = port;
             //TODO: Parse input IP
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddress = ipHostInfo.AddressList[1];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, _port);
 
-            Console.WriteLine($"TCP listening at {ipAddress.ToString()}:{port}");
+            Console.WriteLine($"TCP listening at {ipAddress.ToString()}:{_port}");
 
             // Create a TCP/IP socket.  
             Socket listener = new Socket(ipAddress.AddressFamily,
                 SocketType.Stream, ProtocolType.Tcp);
 
             // Bind the socket to the local endpoint and listen for incoming connections.  
-            try
-            {
-                listener.Bind(localEndPoint);
-                listener.Listen(100);
+            listener.Bind(localEndPoint);
+            listener.Listen(100);
 
-                while (true)
+            while (true)
+            {
+                // Set the event to nonsignaled state.  
+                allDone.Reset();
+
+                // Start an asynchronous socket to listen for connections.  
+                Console.WriteLine("Waiting for a connection...");
+                listener.BeginAccept(
+                    new AsyncCallback(AcceptCallback),
+                    listener);
+
+                // Wait until a connection is made before continuing.  
+                allDone.WaitOne();
+                Messenger.Default.Send(new HoloLensStatusMessage()
                 {
-                    // Set the event to nonsignaled state.  
-                    allDone.Reset();
-
-                    // Start an asynchronous socket to listen for connections.  
-                    Console.WriteLine("Waiting for a connection...");
-                    listener.BeginAccept(
-                        new AsyncCallback(AcceptCallback),
-                        listener);
-
-                    // Wait until a connection is made before continuing.  
-                    allDone.WaitOne();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
+                    Port = _port,
+                    IsRunning = true,
+                    HoloLensConnected = true
+                });
             }
         }
 

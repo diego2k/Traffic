@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using GalaSoft.MvvmLight.Messaging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using traffic.server.Data;
+using traffic.server.Messages;
 using traffic.server.Net;
 
 namespace traffic.server.Manager
@@ -21,46 +23,66 @@ namespace traffic.server.Manager
 
         private void Initilize()
         {
-            Thread th = new Thread(() =>
-            {
-                try
-                {
-                    _me = new AsynchronousUPDListner();
-                    _me.UdpDataReceived += SimulationMe; ;
-                    _me.Start(5001, 104);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    // TODO: do something
-                }
-            });
-            th.Start();
-
-            for (int i = 0; i < 18; i++)
+            for (int i = 1; i < 20; i++)
             {
                 Thread th1 = new Thread(() =>
                 {
+                    int port = 5000 + i;
                     try
                     {
                         var l = new AsynchronousUPDListner();
                         l.UdpDataReceived += SimulationTraffic;
-                        l.Start(5002 + i, 104);
                         _traffic.Add(l);
+                        Messenger.Default.Send(new PortStatusMessage()
+                        {
+                            Port = port,
+                            IsRunning = true
+                        });
+                        l.Start(port, 104);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
-                        // TODO: do something
+                        Messenger.Default.Send(new PortStatusMessage()
+                        {
+                            Port = port,
+                            IsRunning = false
+                        });
                     }
                 });
                 th1.Start();
                 Thread.Sleep(100);
             }
 
-            _tcpListner = new AsynchronousSocketListener();
-            _tcpListner.TcpDataReceived += HoloLensData;
-            _tcpListner.StartAsync(11000);
+
+            Thread th = new Thread(() =>
+            {
+                try
+                {
+                    _tcpListner = new AsynchronousSocketListener();
+                    _tcpListner.TcpDataReceived += HoloLensData;
+                    Messenger.Default.Send(new HoloLensStatusMessage()
+                    {
+                        Port = 11000,
+                        IsRunning = true,
+                        HoloLensConnected = false
+                    });
+                    _tcpListner.StartListening(11000);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Messenger.Default.Send(new HoloLensStatusMessage()
+                    {
+                        Port = 11000,
+                        IsRunning = false,
+                        HoloLensConnected = false
+                    });
+                }
+            });
+            th.Start();
+
+
         }
 
         private void HoloLensData(object sender, TcpDataReceivedEventArgs e)
@@ -70,9 +92,24 @@ namespace traffic.server.Manager
 
         private void SimulationTraffic(object sender, UdpDataReceivedEventArgs e)
         {
-            if (_myPosition == null) return;
+            var listner = sender as AsynchronousUPDListner;
+            if (listner == null) return;
 
             TrafficData trafficPosition = new TrafficData(e.Data);
+            Messenger.Default.Send(new PortStatusMessage()
+            {
+                Port = listner.Port,
+                IsRunning = true,
+                Latitude = trafficPosition.Latitude,
+                Longitude = trafficPosition.Longitude
+            });
+
+            if (listner.Port == 5001)
+            {
+                _myPosition = trafficPosition;
+                return;
+            }
+            if (_myPosition == null) return;
 
             // TODO: Convert
 
@@ -86,11 +123,6 @@ namespace traffic.server.Manager
                 RotationZ = 0
             });
             _tcpListner.Send(traffic);
-        }
-
-        private void SimulationMe(object sender, UdpDataReceivedEventArgs e)
-        {
-            _myPosition = new TrafficData(e.Data);
         }
     }
 }

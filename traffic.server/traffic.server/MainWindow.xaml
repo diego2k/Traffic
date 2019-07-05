@@ -5,8 +5,203 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:traffic.server"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        Title="Traffic Avoidance" Height="680" Width="1000">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="302,133,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Status Simulation" VerticalAlignment="Top">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[0]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[0]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[0]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[0]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[1]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[1]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[1]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[1]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[2]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[2]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[2]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[2]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[3]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[3]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[3]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[3]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[4]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[4]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[4]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[4]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[5]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[5]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[5]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[5]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[6]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[6]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[6]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[6]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[7]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[7]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[7]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[7]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[8]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[8]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[8]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[8]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[9]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[9]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[9]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[9]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[10]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[10]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[10]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[10]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[11]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[11]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[11]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[11]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[12]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[12]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[12]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[12]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[13]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[13]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[13]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[13]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[14]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[14]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[14]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[14]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[15]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[15]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[15]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[15]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[16]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[16]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[16]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[16]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[17]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[17]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[17]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[17]}" Width="100"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusColor[18]}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding Port[18]}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Latitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Latitude[18]}" Width="100"/>
+                    <Label Margin="5,0,0,0" Content="Longitude: "></Label>
+                    <Label Margin="5,0,0,0" Content="{Binding Longitude[18]}" Width="100"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="0" Grid.Row="1" Header="Status HoloLens" VerticalAlignment="Top">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <Label Background="{Binding StatusHoloLensColor}" Width="10" Height="10"/>
+                    <Label Margin="5,0,0,0" Content="Port: "/>
+                    <Label Margin="5,0,0,0" Content="{Binding HoloLensPort}" Width="50"/>
+                    <Label Margin="5,0,0,0" Content="Connected: "></Label>
+                    <Label Background="{Binding HoloLensConnectedColor}" Width="10" Height="10"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
     </Grid>
 </Window>
