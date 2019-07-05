@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "Szenario A",
+    "Collide": true,
+    "RightOfWay": 1,
+    "TurnRight": false,
+    "CompassCurrent": 100,
+    "CompassTarget": 120,
+    "CompassTurnRight": true
+  },
+  {
+    "Name": "Szenario B",
+    "Collide": false,
+    "RightOfWay": 2,
+    "TurnRight": false,
+    "CompassCurrent": 0,
+    "CompassTarget": 0,
+    "CompassTurnRight": false
+  }
+]

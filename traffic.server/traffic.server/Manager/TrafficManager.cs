@@ -11,7 +11,6 @@ namespace traffic.server.Manager
 {
     class TrafficManager
     {
-        private AsynchronousUPDListner _me;
         private List<AsynchronousUPDListner> _traffic = new List<AsynchronousUPDListner>();
         private AsynchronousSocketListener _tcpListner;
         private TrafficData _myPosition = null;
@@ -54,7 +53,6 @@ namespace traffic.server.Manager
                 Thread.Sleep(100);
             }
 
-
             Thread th = new Thread(() =>
             {
                 try
@@ -81,8 +79,6 @@ namespace traffic.server.Manager
                 }
             });
             th.Start();
-
-
         }
 
         private void HoloLensData(object sender, TcpDataReceivedEventArgs e)
@@ -124,5 +120,11 @@ namespace traffic.server.Manager
             });
             _tcpListner.Send(traffic);
         }
+
+        internal void SendScenario(ScenarioData scenario)
+        {
+            _tcpListner.Send(JsonConvert.SerializeObject(scenario));
+        }
+
     }
 }

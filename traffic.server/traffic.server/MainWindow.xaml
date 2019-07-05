@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:traffic.server"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
-        Title="Traffic Avoidance" Height="680" Width="1000">
+        Title="Traffic Avoidance" Height="690" Width="1000">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -201,6 +201,20 @@
                     <Label Margin="5,0,0,0" Content="Connected: "></Label>
                     <Label Background="{Binding HoloLensConnectedColor}" Width="10" Height="10"/>
                 </StackPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Column="1" Grid.Row="0" Header="Experimental Data" VerticalAlignment="Top">
+            <StackPanel>
+                <DataGrid ItemsSource="{Binding ScenarioData}" 
+                          CanUserAddRows="False" 
+                          CanUserDeleteRows="False"
+                          SelectionMode="Single" 
+                          IsReadOnly="True"
+                          SelectedItem="{Binding SelectedScenario}"/>
+
+                <Button Margin="10" Content="Send Selected Scenario" 
+                        Command="{Binding SendScenarioCommand}"></Button>
             </StackPanel>
         </GroupBox>
     </Grid>

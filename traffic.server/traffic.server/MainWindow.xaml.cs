@@ -22,16 +22,11 @@ namespace traffic.server
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TrafficManager _trafficManager;
 
         public MainWindow()
         {
             InitializeComponent();
-            _trafficManager = new TrafficManager();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-        }
     }
 }
