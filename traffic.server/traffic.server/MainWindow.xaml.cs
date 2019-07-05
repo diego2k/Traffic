@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using traffic.server.Manager;
 using traffic.server.Net;
 
 namespace traffic.server
@@ -21,36 +22,16 @@ namespace traffic.server
     /// </summary>
     public partial class MainWindow : Window
     {
-        private AsynchronousUPDListner _updListner;
-        private AsynchronousSocketListener _tcpListner;
+        private TrafficManager _trafficManager;
 
         public MainWindow()
         {
             InitializeComponent();
+            _trafficManager = new TrafficManager();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (_updListner != null)
-            {
-                // TODO: kill it
-                _updListner.UdpDataReceived -= _updListner_UdpDataReceived;
-            }
-            _updListner = new AsynchronousUPDListner();
-            _updListner.UdpDataReceived += _updListner_UdpDataReceived;
-            _updListner.StartAsync();
-
-            if(_tcpListner != null)
-            {
-                // TODO: kill it
-            }
-            _tcpListner = new AsynchronousSocketListener();
-            _tcpListner.StartAsync();
-        }
-
-        private void _updListner_UdpDataReceived(object sender, UdpDataReceivedEventArgs e)
-        {
-            Console.WriteLine(e.DataJson);
         }
     }
 }

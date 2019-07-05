@@ -19,23 +19,30 @@ namespace traffic.server.Net
         public StringBuilder sb = new StringBuilder();
     }
 
+    public class TcpDataReceivedEventArgs : EventArgs
+    {
+        public string Data { get; set; }
+        public DateTime Time { get; set; }
+    }
+
     public class AsynchronousSocketListener
     {
         public static ManualResetEvent allDone = new ManualResetEvent(false);
         public static Dictionary<string, string> dict = new Dictionary<string, string>();
         private static Socket handler;
+        public event EventHandler<TcpDataReceivedEventArgs> TcpDataReceived;
 
         public AsynchronousSocketListener()
         {
         }
 
-        public void StartAsync()
+        public void StartAsync(int port)
         {
             Thread th = new Thread(() =>
             {
                 try
                 {
-                    StartListening();
+                    StartListening(port);
                 }
                 catch (Exception ex)
                 {
@@ -45,14 +52,14 @@ namespace traffic.server.Net
             th.Start();
         }
 
-        private void StartListening()
+        private void StartListening(int port)
         {
             //TODO: Parse input IP
             IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             IPAddress ipAddress = ipHostInfo.AddressList[1];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
 
-            Console.WriteLine($"TCP listening at {ipAddress.ToString()}:11000");
+            Console.WriteLine($"TCP listening at {ipAddress.ToString()}:{port}");
 
             // Create a TCP/IP socket.  
             Socket listener = new Socket(ipAddress.AddressFamily,
@@ -128,8 +135,11 @@ namespace traffic.server.Net
                     {
                         content = state.sb.ToString();
                         Console.WriteLine(content);
-                        // TODO: Implement
-
+                        OnTcpDataReceived(new TcpDataReceivedEventArgs()
+                        {
+                            Data = content,
+                            Time = DateTime.Now,
+                        });
                     }
                     catch (Exception e)
                     {
@@ -204,6 +214,15 @@ namespace traffic.server.Net
             catch (Exception e)
             {
                 Console.Write("Client Disconnected");
+            }
+        }
+
+        protected virtual void OnTcpDataReceived(TcpDataReceivedEventArgs e)
+        {
+            EventHandler<TcpDataReceivedEventArgs> handler = TcpDataReceived;
+            if (handler != null)
+            {
+                handler(this, e);
             }
         }
     }

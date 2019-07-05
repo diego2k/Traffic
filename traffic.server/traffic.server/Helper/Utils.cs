@@ -191,5 +191,21 @@ namespace traffic.server.Helper
                              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                              .ToArray();
         }
+
+        public static int GetBigEndianIntegerFromByteArray(byte[] data, int startIndex)
+        {
+            return (data[startIndex] << 24)
+                 | (data[startIndex + 1] << 16)
+                 | (data[startIndex + 2] << 8)
+                 | data[startIndex + 3];
+        }
+
+        public static int GetLittleEndianIntegerFromByteArray(byte[] data, int startIndex)
+        {
+            return (data[startIndex + 3] << 24)
+                 | (data[startIndex + 2] << 16)
+                 | (data[startIndex + 1] << 8)
+                 | data[startIndex];
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace traffic.server.Data
 {
     public class AircraftKinematicsData
     {
-        public double simulated_Time;
+        public double SimulatedTime { get; set; }
         public double longitude;
         public double latitude;
         public double altitude;
@@ -34,7 +34,7 @@ namespace traffic.server.Data
         public AircraftKinematicsData(List<double> doubleList, List<float> floatList)
         {
 
-            this.simulated_Time = doubleList[0];
+            this.SimulatedTime = doubleList[0];
             this.longitude = Utils.ConvertRadiansToDegrees(doubleList[1]);
             this.latitude = Utils.ConvertRadiansToDegrees(doubleList[2]);
             this.altitude = doubleList[3];
