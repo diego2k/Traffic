@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -108,6 +110,15 @@ namespace traffic.server.Manager
             if (_myPosition == null) return;
 
             // TODO: Convert
+            Matrix<double> A = DenseMatrix.OfArray(new double[,] {
+                {1,1,1,1},
+                {1,2,3,4},
+                {4,3,2,1}});
+            Vector<double>[] nullspace = A.Kernel();
+
+            // verify: the following should be approximately (0,0,0)
+            var res = (A * (2 * nullspace[0] - 3 * nullspace[1]));
+
 
             var traffic = JsonConvert.SerializeObject(new HoloLensTraffic()
             {
