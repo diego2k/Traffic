@@ -129,12 +129,23 @@ namespace traffic.server.Manager
                 RotationY = 0,
                 RotationZ = 0
             });
-            _tcpListner.Send(traffic);
+
+            var env = new Envelope()
+            {
+                content = JsonConvert.SerializeObject(traffic),
+                type = typeof(HoloLensTraffic).Name
+            };
+            _tcpListner.Send(JsonConvert.SerializeObject(env));
         }
 
         internal void SendScenario(ScenarioData scenario)
         {
-            _tcpListner.Send(JsonConvert.SerializeObject(scenario));
+            var env = new Envelope()
+            {
+                content = JsonConvert.SerializeObject(scenario),
+                type = typeof(ScenarioData).Name
+            };
+            _tcpListner.Send(JsonConvert.SerializeObject(env));
         }
 
     }

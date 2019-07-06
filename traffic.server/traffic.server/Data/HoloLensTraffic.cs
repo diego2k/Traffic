@@ -1,6 +1,6 @@
 ﻿namespace traffic.server.Data
 {
-    class HoloLensTraffic
+    public class HoloLensTraffic
     {
         public double X { get; set; }
         public double Y { get; set; }
