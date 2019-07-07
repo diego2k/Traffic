@@ -88,6 +88,16 @@ namespace traffic.server.Manager
             Console.WriteLine(e.Data);
         }
 
+        internal void SendScenario(ScenarioData scenario)
+        {
+            var env = new Envelope()
+            {
+                Content = JsonConvert.SerializeObject(scenario),
+                Type = typeof(ScenarioData).Name
+            };
+            _tcpListner.Send(JsonConvert.SerializeObject(env));
+        }
+
         private void SimulationTraffic(object sender, UdpDataReceivedEventArgs e)
         {
             var listner = sender as AsynchronousUPDListner;
@@ -109,6 +119,28 @@ namespace traffic.server.Manager
             }
             if (_myPosition == null) return;
 
+            var pos = CalculateTarget(_myPosition, trafficPosition);
+
+            var traffic = new HoloLensTraffic()
+            {
+                PosX = pos.x,
+                PosY = pos.y,
+                PosZ = pos.z,
+                RotationX = 0,
+                RotationY = 0,
+                RotationZ = 0
+            };
+            Console.WriteLine($"{traffic.PosX} {traffic.PosY} {traffic.PosZ}");
+            var env = new Envelope()
+            {
+                Content = JsonConvert.SerializeObject(traffic),
+                Type = typeof(HoloLensTraffic).Name
+            };
+            _tcpListner.Send(JsonConvert.SerializeObject(env));
+        }
+
+        private (float x, float y, float z) CalculateTarget(TrafficData me, TrafficData traffic)
+        {
             Func<double, double, double, Matrix<double>> I_ge = delegate (double longitude, double latitude, double radius)
             {
                 return DenseMatrix.OfArray(new double[,] {
@@ -135,36 +167,16 @@ namespace traffic.server.Manager
             };
             const double r = 6355707;
 
-            var d_b = I_bg(_myPosition.Longitude, _myPosition.Latitude, r) * 
-                      I_ge(_myPosition.YawAngle, _myPosition.PitchAngle, _myPosition.RollAngle) * 
-                      d_e(trafficPosition.Longitude, trafficPosition.Latitude, r);
+            var d_b = I_bg(me.Longitude, me.Latitude, r) *
+                      I_ge(DegreeToRadian(me.YawAngle), DegreeToRadian(me.PitchAngle), DegreeToRadian(me.RollAngle)) *
+                      d_e(traffic.Longitude, traffic.Latitude, r);
 
-            var traffic = new HoloLensTraffic()
-            {
-                PosX = (float)d_b[1, 0],
-                PosY = -(float)d_b[2, 0],
-                PosZ = (float)d_b[0, 0],
-                RotationX = 0,
-                RotationY = 0,
-                RotationZ = 0
-            };
-            Console.WriteLine($"{traffic.PosX} {traffic.PosY} {traffic.PosZ}");
-            var env = new Envelope()
-            {
-                Content = JsonConvert.SerializeObject(traffic),
-                Type = typeof(HoloLensTraffic).Name
-            };
-            _tcpListner.Send(JsonConvert.SerializeObject(env));
+            return ((float)d_b[1, 0], -(float)d_b[2, 0], (float)d_b[0, 0]);
         }
 
-        internal void SendScenario(ScenarioData scenario)
+        private double DegreeToRadian(double angle)
         {
-            var env = new Envelope()
-            {
-                Content = JsonConvert.SerializeObject(scenario),
-                Type = typeof(ScenarioData).Name
-            };
-            _tcpListner.Send(JsonConvert.SerializeObject(env));
+            return Math.PI * angle / 180.0;
         }
 
     }
