@@ -140,6 +140,10 @@ namespace traffic.server.Manager
 
         internal void SendScenario(ScenarioData scenario)
         {
+            string bla = "";
+
+            var a = JsonConvert.DeserializeObject<Envelope>(bla);
+
             var env = new Envelope()
             {
                 content = JsonConvert.SerializeObject(scenario),

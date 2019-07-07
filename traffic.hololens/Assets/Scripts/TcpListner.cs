@@ -64,26 +64,19 @@ public class TcpListner : MonoBehaviour
         HostName serverHost = new HostName(IP);
         try
         {
-            Debug.Log("1...");
             await socket.ConnectAsync(serverHost, PORT);
-            Debug.Log("2...");
             try
             {
                 using (DataReader reader = new DataReader(socket.InputStream))
                 {
-            Debug.Log("3...");
                     reader.InputStreamOptions = InputStreamOptions.ReadAhead;
-                    Debug.Log("4...");
 
                     while (true)
                     {
                         IAsyncOperation<uint> taskLoad = reader.LoadAsync(900);
-            Debug.Log("5...");
                         //taskLoad.AsTask().Wait();
                         await taskLoad.AsTask().ConfigureAwait(false);
-            Debug.Log("6...");
                         var bytesRead = taskLoad.GetResults();
-            Debug.Log("7...");
                         if (bytesRead != 900)
                         {
                             var x = 0;
@@ -93,19 +86,26 @@ public class TcpListner : MonoBehaviour
                         try
                         {
                             Debug.Log(cleanedString);
+            Debug.Log("1...");
                             Envelope env = JsonConvert.DeserializeObject<Envelope>(cleanedString);
+            Debug.Log("2...");
                             if (env.type == typeof(HoloLensTraffic).Name)
                             {
+            Debug.Log("3...");
                                 TrafficData = JsonConvert.DeserializeObject<HoloLensTraffic>(env.content);
+            Debug.Log("4...");
                                 IsTrafficDataValid = true;
                             }
 
                             else if (env.type == typeof(ScenarioData).Name)
                             {
+            Debug.Log("5...");
                                 ScenarioData = JsonConvert.DeserializeObject<ScenarioData>(env.content);
+            Debug.Log("6...");
                                 IsScenarioDataValid = true;
                             }
 
+            Debug.Log("7...");
                         }
                         catch (Exception e)
                         {
