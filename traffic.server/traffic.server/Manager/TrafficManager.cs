@@ -109,27 +109,46 @@ namespace traffic.server.Manager
             }
             if (_myPosition == null) return;
 
-            // TODO: Convert
-            Matrix<double> A = DenseMatrix.OfArray(new double[,] {
-                {1,1,1,1},
-                {1,2,3,4},
-                {4,3,2,1}});
-            Vector<double>[] nullspace = A.Kernel();
+            Func<double, double, double, Matrix<double>> I_ge = delegate (double longitude, double latitude, double radius)
+            {
+                return DenseMatrix.OfArray(new double[,] {
+                {-Math.Cos(longitude)*Math.Sin(latitude), -Math.Sin(longitude)*Math.Sin(latitude),  Math.Cos(latitude), 0},
+                {-Math.Sin(longitude),                     Math.Cos(longitude),                     0,                  0},
+                {-Math.Cos(longitude)*Math.Cos(latitude), -Math.Sin(longitude)*Math.Cos(latitude), -Math.Sin(latitude), radius},
+                { 0,                                       0,                                       0,                  1} });
+            };
+            Func<double, double, double, Matrix<double>> I_bg = delegate (double yaw, double pitch, double roll)
+            {
+                return DenseMatrix.OfArray(new double[,] {
+                {Math.Cos(yaw)*Math.Cos(pitch),                                               Math.Sin(yaw)*Math.Cos(pitch),                                              -Math.Sin(pitch),                0},
+                {Math.Cos(yaw)*Math.Sin(pitch)*Math.Sin(roll) - Math.Sin(yaw)*Math.Cos(roll), Math.Sin(yaw)*Math.Sin(pitch)*Math.Sin(roll) + Math.Cos(yaw)*Math.Cos(roll), Math.Cos(pitch)*Math.Sin(roll), 0},
+                {Math.Cos(yaw)*Math.Sin(pitch)*Math.Cos(roll) + Math.Sin(yaw)*Math.Sin(roll), Math.Sin(yaw)*Math.Sin(pitch)*Math.Cos(roll) - Math.Cos(yaw)*Math.Sin(roll), Math.Cos(pitch)*Math.Cos(roll), 0},
+                { 0,                                                                          0,                                                                           0,                              1} });
+            };
+            Func<double, double, double, Matrix<double>> d_e = delegate (double longitude, double latitude, double radius)
+            {
+                return DenseMatrix.OfArray(new double[,] {
+                {radius*Math.Cos(longitude)*Math.Cos(latitude)},
+                {radius*Math.Sin(longitude)*Math.Cos(latitude)},
+                {radius*Math.Sin(latitude)},
+                {1} });
+            };
+            const double r = 6355707;
 
-            // verify: the following should be approximately (0,0,0)
-            var res = (A * (2 * nullspace[0] - 3 * nullspace[1]));
-
+            var d_b = I_bg(_myPosition.Longitude, _myPosition.Latitude, r) * 
+                      I_ge(_myPosition.YawAngle, _myPosition.PitchAngle, _myPosition.RollAngle) * 
+                      d_e(trafficPosition.Longitude, trafficPosition.Latitude, r);
 
             var traffic = new HoloLensTraffic()
             {
-                PosX = 0,
-                PosY = 1,
-                PosZ = 3,
+                PosX = (float)d_b[1, 0],
+                PosY = -(float)d_b[2, 0],
+                PosZ = (float)d_b[0, 0],
                 RotationX = 0,
                 RotationY = 0,
                 RotationZ = 0
             };
-
+            Console.WriteLine($"{traffic.PosX} {traffic.PosY} {traffic.PosZ}");
             var env = new Envelope()
             {
                 Content = JsonConvert.SerializeObject(traffic),

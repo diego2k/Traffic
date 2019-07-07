@@ -84,27 +84,18 @@ public class TcpListner : MonoBehaviour
 
                         try
                         {
-                            Debug.Log(cleanedString);
-            Debug.Log("1...");
+                            //Debug.Log(cleanedString);
                             Envelope env = JsonUtility.FromJson<Envelope>(cleanedString);
-                            Debug.Log("2..."+ env?.type+";"+env?.content+";");
                             if (env.type == typeof(HoloLensTraffic).Name)
                             {
-            Debug.Log("3...");
                                 TrafficData = JsonUtility.FromJson<HoloLensTraffic>(env.content);
-            Debug.Log("4..."+TrafficData?.PosX + " " +TrafficData?.PosY + " "+TrafficData?.PosZ + " "+TrafficData?.RotationX);
                                 IsTrafficDataValid = true;
                             }
-
                             else if (env.type == typeof(ScenarioData).Name)
                             {
-            Debug.Log("5...");
                                 ScenarioData = JsonUtility.FromJson<ScenarioData>(env.content);
-            Debug.Log("6..."+ ScenarioData?.Collide+ " " + ScenarioData?.CompassCurrent + " " + ScenarioData?.CompassTarget + " " + ScenarioData?.CompassTurnRight + " " + ScenarioData?.Name + " " + ScenarioData?.TurnRight);
                                 IsScenarioDataValid = true;
                             }
-
-            Debug.Log("7...");
                         }
                         catch (Exception e)
                         {
