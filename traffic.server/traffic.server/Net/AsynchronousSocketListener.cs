@@ -70,17 +70,17 @@ namespace traffic.server.Net
 
                 // Wait until a connection is made before continuing.  
                 allDone.WaitOne();
-                Messenger.Default.Send(new HoloLensStatusMessage()
-                {
-                    Port = _port,
-                    IsRunning = true,
-                    HoloLensConnected = true
-                });
             }
         }
 
         private void AcceptCallback(IAsyncResult ar)
         {
+            Messenger.Default.Send(new HoloLensStatusMessage()
+            {
+                Port = _port,
+                IsRunning = true,
+                HoloLensConnected = true
+            });
             // Signal the main thread to continue.  
             allDone.Set();
 
@@ -153,6 +153,12 @@ namespace traffic.server.Net
             catch (SocketException e)
             {
                 Console.WriteLine(e.Message);
+                Messenger.Default.Send(new HoloLensStatusMessage()
+                {
+                    Port = _port,
+                    IsRunning = true,
+                    HoloLensConnected = false
+                });
             }
         }
 

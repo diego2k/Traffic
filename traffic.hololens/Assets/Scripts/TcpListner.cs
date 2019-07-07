@@ -25,7 +25,7 @@ public class TcpListner : MonoBehaviour
     public static HoloLensTraffic TrafficData { get; private set; }
     public static bool IsTrafficDataValid { get; private set; }
     public static ScenarioData ScenarioData { get; private set; }
-    public static bool IsScenarioDataValid { get; private set; } 
+    public static bool IsScenarioDataValid { get; private set; }
 
 #if WINDOWS_UWP
     public static StreamSocket socket;
@@ -35,7 +35,7 @@ public class TcpListner : MonoBehaviour
     //home
     //private static string ip = "192.168.8.102";
     //work
-    private static string IP = "192.168.11.41";
+    private static string IP = "192.168.2.40";
     //sim
     //private static string ip = "192.168.8.38";
     //voi
@@ -51,28 +51,39 @@ public class TcpListner : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+    }
+
     public async void StartSocket()
     {
-        Console.WriteLine("Starting TCP listner ...");
+        Debug.Log("Starting TCP listner ...");
         socket = new StreamSocket();
 
         // var test_ip = GetLocalIp();
         HostName serverHost = new HostName(IP);
         try
         {
+            Debug.Log("1...");
             await socket.ConnectAsync(serverHost, PORT);
+            Debug.Log("2...");
             try
             {
                 using (DataReader reader = new DataReader(socket.InputStream))
                 {
+            Debug.Log("3...");
                     reader.InputStreamOptions = InputStreamOptions.ReadAhead;
+                    Debug.Log("4...");
 
                     while (true)
                     {
                         IAsyncOperation<uint> taskLoad = reader.LoadAsync(900);
+            Debug.Log("5...");
                         //taskLoad.AsTask().Wait();
                         await taskLoad.AsTask().ConfigureAwait(false);
+            Debug.Log("6...");
                         var bytesRead = taskLoad.GetResults();
+            Debug.Log("7...");
                         if (bytesRead != 900)
                         {
                             var x = 0;
@@ -81,7 +92,7 @@ public class TcpListner : MonoBehaviour
 
                         try
                         {
-                            Console.WriteLine(cleanedString);
+                            Debug.Log(cleanedString);
                             Envelope env = JsonConvert.DeserializeObject<Envelope>(cleanedString);
                             if (env.type == typeof(HoloLensTraffic).Name)
                             {
@@ -98,25 +109,21 @@ public class TcpListner : MonoBehaviour
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            Debug.Log(e.Message);
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.Log(e.Message);
             }
         }
         catch (System.Runtime.InteropServices.COMException e)
         {
-            Console.WriteLine(e.Message);
+            Debug.Log(e.Message);
         }
-        Console.WriteLine("TCP listner closed.");
-    }
-
-    void Update()
-    {
+        Debug.Log("TCP listner closed.");
     }
 
     public static async void SendDataToCLient(string data)
