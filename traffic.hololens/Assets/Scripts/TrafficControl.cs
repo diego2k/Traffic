@@ -16,9 +16,9 @@ public class TrafficControl : MonoBehaviour
         if (TcpListner.IsTrafficDataValid)
         {
             transform.position = new Vector3(
-                (float)TcpListner.TrafficData.X,
-                (float)TcpListner.TrafficData.Y,
-                (float)TcpListner.TrafficData.Z);
+                TcpListner.TrafficData.PosX,
+                TcpListner.TrafficData.PosY,
+                TcpListner.TrafficData.PosZ);
         }
     }
 }

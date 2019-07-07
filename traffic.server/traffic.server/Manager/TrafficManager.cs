@@ -120,34 +120,30 @@ namespace traffic.server.Manager
             var res = (A * (2 * nullspace[0] - 3 * nullspace[1]));
 
 
-            var traffic = JsonConvert.SerializeObject(new HoloLensTraffic()
+            var traffic = new HoloLensTraffic()
             {
-                X = 0,
-                Y = 1,
-                Z = 3,
+                PosX = 0,
+                PosY = 1,
+                PosZ = 3,
                 RotationX = 0,
                 RotationY = 0,
                 RotationZ = 0
-            });
+            };
 
             var env = new Envelope()
             {
-                content = JsonConvert.SerializeObject(traffic),
-                type = typeof(HoloLensTraffic).Name
+                Content = JsonConvert.SerializeObject(traffic),
+                Type = typeof(HoloLensTraffic).Name
             };
             _tcpListner.Send(JsonConvert.SerializeObject(env));
         }
 
         internal void SendScenario(ScenarioData scenario)
         {
-            string bla = "";
-
-            var a = JsonConvert.DeserializeObject<Envelope>(bla);
-
             var env = new Envelope()
             {
-                content = JsonConvert.SerializeObject(scenario),
-                type = typeof(ScenarioData).Name
+                Content = JsonConvert.SerializeObject(scenario),
+                Type = typeof(ScenarioData).Name
             };
             _tcpListner.Send(JsonConvert.SerializeObject(env));
         }

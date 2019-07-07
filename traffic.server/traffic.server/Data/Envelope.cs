@@ -3,9 +3,9 @@
 public class Envelope
 {
     [JsonProperty("content")]
-    public string content { get; set; }
+    public string Content { get; set; }
 
     [JsonProperty("type")]
-    public string type { get; set; }
+    public string Type { get; set; }
 
 }

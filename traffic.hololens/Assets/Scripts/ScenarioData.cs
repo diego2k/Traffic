@@ -1,21 +1,22 @@
-﻿public class ScenarioData
+﻿[System.Serializable]
+public class ScenarioData
 {
-    public string Name { get; set; }
+    public string Name;
 
-    public bool Collide { get; set; }
+    public bool Collide;
 
     /// <summary>
     /// 1: Traffic has the right of way
     /// 2: I have the right of way
     /// 3: Nobody has the right of way
     /// </summary>
-    public int RightOfWay { get; set; }
+    public int RightOfWay;
 
-    public bool TurnRight { get; set; }
+    public bool TurnRight;
 
-    public int CompassCurrent { get; set; }
+    public int CompassCurrent;
 
-    public int CompassTarget { get; set; }
+    public int CompassTarget;
 
-    public bool CompassTurnRight { get; set; }
+    public bool CompassTurnRight;
 }

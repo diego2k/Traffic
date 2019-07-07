@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Newtonsoft.Json;
 using System;
 #if WINDOWS_UWP
 using Windows.Networking.Connectivity;
@@ -87,21 +86,21 @@ public class TcpListner : MonoBehaviour
                         {
                             Debug.Log(cleanedString);
             Debug.Log("1...");
-                            Envelope env = JsonConvert.DeserializeObject<Envelope>(cleanedString);
-            Debug.Log("2...");
+                            Envelope env = JsonUtility.FromJson<Envelope>(cleanedString);
+                            Debug.Log("2..."+ env?.type+";"+env?.content+";");
                             if (env.type == typeof(HoloLensTraffic).Name)
                             {
             Debug.Log("3...");
-                                TrafficData = JsonConvert.DeserializeObject<HoloLensTraffic>(env.content);
-            Debug.Log("4...");
+                                TrafficData = JsonUtility.FromJson<HoloLensTraffic>(env.content);
+            Debug.Log("4..."+TrafficData?.PosX + " " +TrafficData?.PosY + " "+TrafficData?.PosZ + " "+TrafficData?.RotationX);
                                 IsTrafficDataValid = true;
                             }
 
                             else if (env.type == typeof(ScenarioData).Name)
                             {
             Debug.Log("5...");
-                                ScenarioData = JsonConvert.DeserializeObject<ScenarioData>(env.content);
-            Debug.Log("6...");
+                                ScenarioData = JsonUtility.FromJson<ScenarioData>(env.content);
+            Debug.Log("6..."+ ScenarioData?.Collide+ " " + ScenarioData?.CompassCurrent + " " + ScenarioData?.CompassTarget + " " + ScenarioData?.CompassTurnRight + " " + ScenarioData?.Name + " " + ScenarioData?.TurnRight);
                                 IsScenarioDataValid = true;
                             }
 

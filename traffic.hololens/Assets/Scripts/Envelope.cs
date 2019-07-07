@@ -1,11 +1,7 @@
-﻿using Newtonsoft.Json;
-
+﻿[System.Serializable]
 public class Envelope
 {
-    [JsonProperty("content")]
-    public string content { get; set; }
+    public string content;
 
-    [JsonProperty("type")]
-    public string type { get; set; }
-
+    public string type;
 }
