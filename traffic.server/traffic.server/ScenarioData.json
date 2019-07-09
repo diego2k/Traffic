@@ -13,7 +13,7 @@
     "Collide": false,
     "RightOfWay": 2,
     "TurnRight": false,
-    "CompassCurrent": 0,
+    "CompassCurrent": 50,
     "CompassTarget": 0,
     "CompassTurnRight": false
   }

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Windows;
 using traffic.server.Data;
 using traffic.server.Messages;
 using traffic.server.Net;
@@ -61,7 +62,7 @@ namespace traffic.server.Manager
                 {
                     _tcpListner = new AsynchronousSocketListener();
                     _tcpListner.TcpDataReceived += HoloLensData;
-                    Messenger.Default.Send(new HoloLensStatusMessage()
+                    Messenger.Default.Send(new InternalHoloLensStatusMessage()
                     {
                         Port = 11000,
                         IsRunning = true,
@@ -72,7 +73,7 @@ namespace traffic.server.Manager
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    Messenger.Default.Send(new HoloLensStatusMessage()
+                    Messenger.Default.Send(new InternalHoloLensStatusMessage()
                     {
                         Port = 11000,
                         IsRunning = false,
@@ -86,6 +87,13 @@ namespace traffic.server.Manager
         private void HoloLensData(object sender, TcpDataReceivedEventArgs e)
         {
             Console.WriteLine(e.Data);
+            var env = JsonConvert.DeserializeObject(e.Data, typeof(Envelope)) as Envelope;
+            if (env.Type == typeof(HoloLensStatusMessage).Name)
+            {
+                var status = JsonConvert.DeserializeObject(env.Content, typeof(HoloLensStatusMessage)) as HoloLensStatusMessage;
+                if (status.readyForTraffic)
+                    MessageBox.Show("User is ready for traffic! Choose a scenario and click 'Send Selected Scenario', choose the same scenario in the Data Player and click Play.", "Ready", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         internal void SendScenario(ScenarioData scenario)

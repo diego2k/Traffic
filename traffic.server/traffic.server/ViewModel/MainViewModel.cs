@@ -80,7 +80,7 @@ namespace traffic.server.ViewModel
             SendScenarioCommand = new RelayCommand(SendScenario, CanSendScenario);
 
             Messenger.Default.Register<PortStatusMessage>(this, PortStatus);
-            Messenger.Default.Register<HoloLensStatusMessage>(this, HoloLensStatus);
+            Messenger.Default.Register<InternalHoloLensStatusMessage>(this, HoloLensStatus);
 
             _trafficManager = new TrafficManager();
         }
@@ -111,7 +111,7 @@ namespace traffic.server.ViewModel
             }));
         }
 
-        private void HoloLensStatus(HoloLensStatusMessage status)
+        private void HoloLensStatus(InternalHoloLensStatusMessage status)
         {
             Application.Current.Dispatcher.Invoke(new Action(() =>
             {

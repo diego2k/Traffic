@@ -1,6 +1,6 @@
 ﻿namespace traffic.server.Messages
 {
-    public class HoloLensStatusMessage
+    public class InternalHoloLensStatusMessage
     {
         public int Port { get; set; }
         public bool IsRunning { get; set; }

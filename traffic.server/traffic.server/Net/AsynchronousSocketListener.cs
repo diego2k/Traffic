@@ -75,7 +75,7 @@ namespace traffic.server.Net
 
         private void AcceptCallback(IAsyncResult ar)
         {
-            Messenger.Default.Send(new HoloLensStatusMessage()
+            Messenger.Default.Send(new InternalHoloLensStatusMessage()
             {
                 Port = _port,
                 IsRunning = true,
@@ -153,7 +153,7 @@ namespace traffic.server.Net
             catch (SocketException e)
             {
                 Console.WriteLine(e.Message);
-                Messenger.Default.Send(new HoloLensStatusMessage()
+                Messenger.Default.Send(new InternalHoloLensStatusMessage()
                 {
                     Port = _port,
                     IsRunning = true,

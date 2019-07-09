@@ -27,18 +27,18 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
 
     public void SpeechCommands(string command)
     {
-        int answer = 0;
+        bool answer = false;
         switch (command)
         {
             case "yes":
                 {
-                    answer = 1;
+                    answer = true;
                     activeButton = button1;
                 }
                 break;
             case "no":
                 {
-                    answer = 2;
+                    answer = false;
                     activeButton = button2;
                 }
                 break;
@@ -48,12 +48,13 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
         }
 
         // Check Answer
+        if (!TcpListner.IsScenarioDataValid) return;
         try
         {
             Image image = activeButton.GetComponent<Image>();
             image.color = Color.yellow;
 
-            int result = GetCorrectAnswer();
+            var result = TcpListner.ScenarioData.Collide;
 
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
@@ -62,7 +63,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
             {
                 this.gameObject.SetActive(false);
 
-                if (result == 1)
+                if (result)
                     nextDialog.SetActive(true);
                 else
                     compass.SetActive(true);
@@ -73,11 +74,6 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
         {
             Debug.LogError(ex.Message);
         }
-    }
-
-    public int GetCorrectAnswer()
-    {
-        return 1;
     }
 
     public void Wait(float seconds, Action action)

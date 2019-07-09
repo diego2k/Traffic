@@ -116,14 +116,28 @@ public class TcpListner : MonoBehaviour
         Debug.Log("TCP listner closed.");
     }
 
-    public static async void SendDataToCLient(string data)
+    private static async void SendDataToCLient(string data)
     {
+        Debug.Log("Send Data:" + data);
         using (DataWriter writer = new DataWriter(socket.OutputStream))
         {
             writer.WriteString(data);
             await writer.StoreAsync();
             writer.DetachStream();
         }
+    }
+
+    public static void SendReadyForTraffic()
+    {
+        Envelope env = new Envelope()
+        {
+            content = JsonUtility.ToJson(new HoloLensStatusMessage()
+            {
+                readyForTraffic = true,
+            }),
+            type = typeof(HoloLensStatusMessage).Name
+        };
+        SendDataToCLient(JsonUtility.ToJson(env));
     }
 
 #endif

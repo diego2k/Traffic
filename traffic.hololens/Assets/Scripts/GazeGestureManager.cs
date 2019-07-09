@@ -3,8 +3,6 @@ using UnityEngine.XR.WSA.Input;
 
 public class GazeGestureManager : MonoBehaviour
 {
-    public static GazeGestureManager Instance { get; private set; }
-
     // Represents the hologram that is currently being gazed at.
     public GameObject FocusedObject { get; private set; }
 
@@ -14,11 +12,10 @@ public class GazeGestureManager : MonoBehaviour
 
     public GameObject traffic;
 
-
     // Use this for initialization
     void Awake()
     {
-        Instance = this;
+        Count = 0;
 
         // Set up a GestureRecognizer to detect Select gestures.
         recognizer = new GestureRecognizer();
@@ -68,6 +65,10 @@ public class GazeGestureManager : MonoBehaviour
                 }
                 else
                 {
+#if WINDOWS_UWP
+                    TcpListner.SendReadyForTraffic();
+#endif
+                    this.gameObject.SetActive(false);
                     traffic.SetActive(true);
                 }
             }

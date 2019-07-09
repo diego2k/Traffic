@@ -54,12 +54,13 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
         }
 
         // Check Answer
+        if (!TcpListner.IsScenarioDataValid) return;
         try
         {
             Image image = activeButton.GetComponent<Image>();
             image.color = Color.yellow;
-
-            int result = GetCorrectAnswer();
+            
+            int result = TcpListner.ScenarioData.RightOfWay;
 
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
@@ -75,11 +76,6 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
         {
             Debug.LogError(ex.Message);
         }
-    }
-
-    public int GetCorrectAnswer()
-    {
-        return 1;
     }
 
     public void Wait(float seconds, Action action)
