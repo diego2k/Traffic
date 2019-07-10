@@ -175,8 +175,12 @@ namespace traffic.server.Manager
             };
             const double r = 6355707;
 
-            var d_b = I_bg(me.Longitude, me.Latitude, r) *
-                      I_ge(DegreeToRadian(me.YawAngle), DegreeToRadian(me.PitchAngle), DegreeToRadian(me.RollAngle)) *
+            var ibg = I_bg(me.YawAngle, me.PitchAngle, me.RollAngle);
+            var ige = I_ge(me.Longitude, me.Latitude, r);
+            var de = d_e(traffic.Longitude, traffic.Latitude, r);
+
+            var d_b = I_bg(me.YawAngle, me.PitchAngle, me.RollAngle) *
+                      I_ge(me.Longitude, me.Latitude, r) *
                       d_e(traffic.Longitude, traffic.Latitude, r);
 
             return ((float)d_b[1, 0], -(float)d_b[2, 0], (float)d_b[0, 0]);

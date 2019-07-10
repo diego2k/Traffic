@@ -34,7 +34,7 @@ public class TcpListner : MonoBehaviour
     //home
     //private static string ip = "192.168.8.102";
     //work
-    private static string IP = "192.168.2.40";
+    private static string IP = "192.168.43.12";
     //sim
     //private static string ip = "192.168.8.38";
     //voi
