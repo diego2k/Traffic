@@ -42,9 +42,7 @@ namespace traffic.server.Net
         public void StartListening(int port)
         {
             _port = port;
-            //TODO: Parse input IP
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            IPAddress ipAddress = ipHostInfo.AddressList[1];
+            IPAddress ipAddress = IPAddress.Parse("0.0.0.0");
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, _port);
 
             Console.WriteLine($"TCP listening at {ipAddress.ToString()}:{_port}");
@@ -121,7 +119,6 @@ namespace traffic.server.Net
                     try
                     {
                         content = state.sb.ToString();
-                        Console.WriteLine(content);
                         OnTcpDataReceived(new TcpDataReceivedEventArgs()
                         {
                             Data = content,
@@ -202,9 +199,8 @@ namespace traffic.server.Net
 
                 // Complete sending the data to the remote device.  
                 int bytesSent = handler.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
             }
-            catch (Exception e)
+            catch
             {
                 Console.Write("Client Disconnected");
             }

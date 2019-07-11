@@ -17,6 +17,7 @@ namespace traffic.server.Manager
         private List<AsynchronousUPDListner> _traffic = new List<AsynchronousUPDListner>();
         private AsynchronousSocketListener _tcpListner;
         private TrafficData _myPosition = null;
+        int count = 0;
 
         public TrafficManager()
         {
@@ -92,7 +93,8 @@ namespace traffic.server.Manager
             {
                 var status = JsonConvert.DeserializeObject(env.Content, typeof(HoloLensStatusMessage)) as HoloLensStatusMessage;
                 if (status.readyForTraffic)
-                    MessageBox.Show("User is ready for traffic! Choose a scenario and click 'Send Selected Scenario', choose the same scenario in the Data Player and click Play.", "Ready", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("User is ready for traffic! Choose a scenario and click 'Send Selected Scenario', choose the same scenario in the Data Player and click Play.", 
+                        "Ready", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -112,13 +114,16 @@ namespace traffic.server.Manager
             if (listner == null) return;
 
             TrafficData trafficPosition = new TrafficData(e.Data);
-            Messenger.Default.Send(new PortStatusMessage()
+            if (count % 10 == 0)
             {
-                Port = listner.Port,
-                IsRunning = true,
-                Latitude = trafficPosition.Latitude,
-                Longitude = trafficPosition.Longitude
-            });
+                Messenger.Default.Send(new PortStatusMessage()
+                {
+                    Port = listner.Port,
+                    IsRunning = true,
+                    Latitude = trafficPosition.Latitude,
+                    Longitude = trafficPosition.Longitude
+                });
+            }
 
             if (listner.Port == 5001)
             {
@@ -138,7 +143,7 @@ namespace traffic.server.Manager
                 RotationY = 0,
                 RotationZ = 0
             };
-            Console.WriteLine($"{traffic.PosX} {traffic.PosY} {traffic.PosZ}");
+            // Console.WriteLine($"{traffic.PosX} {traffic.PosY} {traffic.PosZ}");
             var env = new Envelope()
             {
                 Content = JsonConvert.SerializeObject(traffic),
@@ -184,11 +189,6 @@ namespace traffic.server.Manager
                       d_e(traffic.Longitude, traffic.Latitude, r);
 
             return ((float)d_b[1, 0], -(float)d_b[2, 0], (float)d_b[0, 0]);
-        }
-
-        private double DegreeToRadian(double angle)
-        {
-            return Math.PI * angle / 180.0;
         }
 
     }

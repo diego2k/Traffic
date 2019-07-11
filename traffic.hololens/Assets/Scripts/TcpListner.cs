@@ -14,7 +14,6 @@ using Windows.Storage.Streams;
 /// </summary>
 public class TcpListner : MonoBehaviour
 {
-
     [Tooltip("The IPv4 Address of the machine running the Unity editor.")]
     public string ServerIP;
 
@@ -28,17 +27,6 @@ public class TcpListner : MonoBehaviour
 
 #if WINDOWS_UWP
     public static StreamSocket socket;
-    private static string PORT = "11000";
-    //uni
-    //private static string ip = "192.168.1.145";
-    //home
-    //private static string ip = "192.168.8.102";
-    //work
-    private static string IP = "192.168.43.12";
-    //sim
-    //private static string ip = "192.168.8.38";
-    //voi
-    //private static string ip = "192.168.1.102";
 
     public void Start()
     {
@@ -60,10 +48,10 @@ public class TcpListner : MonoBehaviour
         socket = new StreamSocket();
 
         // var test_ip = GetLocalIp();
-        HostName serverHost = new HostName(IP);
+        HostName serverHost = new HostName(ServerIP);
         try
         {
-            await socket.ConnectAsync(serverHost, PORT);
+            await socket.ConnectAsync(serverHost, ConnectionPort.ToString());
             try
             {
                 using (DataReader reader = new DataReader(socket.InputStream))
@@ -116,9 +104,14 @@ public class TcpListner : MonoBehaviour
         Debug.Log("TCP listner closed.");
     }
 
-    private static async void SendDataToCLient(string data)
+    private static async Task SendDataToCLient(string data)
     {
         Debug.Log("Send Data:" + data);
+        if(socket == null)
+        {
+            Debug.LogError("Socket is NULL!");
+            return;
+        }
         using (DataWriter writer = new DataWriter(socket.OutputStream))
         {
             writer.WriteString(data);
@@ -127,7 +120,7 @@ public class TcpListner : MonoBehaviour
         }
     }
 
-    public static void SendReadyForTraffic()
+    public static async Task SendReadyForTraffic()
     {
         Envelope env = new Envelope()
         {
@@ -137,7 +130,7 @@ public class TcpListner : MonoBehaviour
             }),
             type = typeof(HoloLensStatusMessage).Name
         };
-        SendDataToCLient(JsonUtility.ToJson(env));
+        await SendDataToCLient(JsonUtility.ToJson(env));
     }
 
 #endif
