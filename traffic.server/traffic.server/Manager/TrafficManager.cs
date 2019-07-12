@@ -4,6 +4,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using traffic.server.Data;
@@ -18,6 +19,7 @@ namespace traffic.server.Manager
         private AsynchronousSocketListener _tcpListner;
         private TrafficData _myPosition = null;
         int count = 0;
+        const string PATH = "Resutls.csv";
 
         public TrafficManager()
         {
@@ -93,8 +95,28 @@ namespace traffic.server.Manager
             {
                 var status = JsonConvert.DeserializeObject(env.Content, typeof(HoloLensStatusMessage)) as HoloLensStatusMessage;
                 if (status.readyForTraffic)
-                    MessageBox.Show("User is ready for traffic! Choose a scenario and click 'Send Selected Scenario', choose the same scenario in the Data Player and click Play.", 
+                    MessageBox.Show("User is ready for traffic! Choose a scenario and click 'Send Selected Scenario', choose the same scenario in the Data Player and click Play.",
                         "Ready", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else if (env.Type == typeof(HoloLensResultMessage).Name)
+            {
+                var result = JsonConvert.DeserializeObject(env.Content, typeof(HoloLensResultMessage)) as HoloLensResultMessage;
+
+                // TODO: calculate
+                int distTraffic = 0;
+                int distDecided = 0;
+
+                if (!File.Exists(PATH))
+                {
+                    using (StreamWriter sw = File.CreateText(PATH))
+                    {
+                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallTrafficTime\tCallDecidedTime\tDistanceTraffic\tDistanceDecided");
+                    }
+                }
+                using (StreamWriter sw = File.AppendText(PATH))
+                {
+                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.TurnRight}\t{result.CompassTurnRight}\t{result.TrafficStartTicks}\t{result.CallTrafficTicks}\t{result.CallDecidedTicks}\t{distTraffic}\t{distDecided}");
+                }
             }
         }
 

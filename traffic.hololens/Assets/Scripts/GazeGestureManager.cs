@@ -16,6 +16,7 @@ public class GazeGestureManager : MonoBehaviour
     void Awake()
     {
         Count = 0;
+        TcpListner.ResetListner();
 
         // Set up a GestureRecognizer to detect Select gestures.
         recognizer = new GestureRecognizer();

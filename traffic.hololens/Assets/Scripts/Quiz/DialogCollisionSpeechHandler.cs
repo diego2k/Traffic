@@ -58,6 +58,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
 
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
+            TcpListner.Results.Collide = answer;
 
             Wait(3, () =>
             {

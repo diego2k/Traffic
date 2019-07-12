@@ -11,8 +11,6 @@ namespace traffic.server.Net
 {
     public class StateObject
     {
-        // Client  socket.  
-        public Socket workSocket = null;
         // Size of receive buffer.  
         public const int BufferSize = 1024;
         // Receive buffer.  
@@ -90,7 +88,6 @@ namespace traffic.server.Net
             dict.Add(date, "Client Connected");
             // Create the state object.  
             StateObject state = new StateObject();
-            state.workSocket = handler;
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                 new AsyncCallback(ReadCallback), state);
         }
@@ -102,10 +99,8 @@ namespace traffic.server.Net
             // Retrieve the state object and the handler socket  
             // from the asynchronous state object.  
             StateObject state = (StateObject)ar.AsyncState;
-            //Socket handler2 = state.workSocket;
             try
             {
-                // Read data from the client socket.   
                 int bytesRead = handler.EndReceive(ar);
 
                 if (bytesRead > 0)
@@ -114,8 +109,6 @@ namespace traffic.server.Net
                     state.sb.Append(Encoding.ASCII.GetString(
                         state.buffer, 0, bytesRead));
 
-                    // Check for end-of-file tag. If it is not there, read   
-                    // more data.  
                     try
                     {
                         content = state.sb.ToString();
@@ -130,21 +123,10 @@ namespace traffic.server.Net
                         Console.WriteLine(e.Message);
                     }
 
-                    if (content.IndexOf("<EOF>") > -1)
-                    {
-                        // All the data has been read from the   
-                        // client. Display it on the console.  
-                        Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
-                            content.Length, content);
-                        // Echo the data back to the client.  
-                        Send(handler, content);
-                    }
-                    else
-                    {
-                        // Not all data received. Get more.  
-                        handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    // Data is less than 1024 bytes so 
+                    state = new StateObject();
+                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                         new AsyncCallback(ReadCallback), state);
-                    }
                 }
             }
             catch (SocketException e)

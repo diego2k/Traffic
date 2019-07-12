@@ -1,4 +1,5 @@
 ﻿using HoloToolkit.Unity.InputModule;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,11 +23,15 @@ public class PlaneSpeechHandler : MonoBehaviour, ISpeechHandler
         {
             Debug.Log("User has decided.");
             centerHUD.text = "Decide now!";
+            TcpListner.Results.CallTrafficTicks = DateTime.Now.Ticks;
+            TcpListner.Results.CallTraffic = TcpListner.TrafficData;
         }
         else if (command == "decided")
         {
             Debug.Log("User has seen traffic.");
             centerHUD.text = string.Empty;
+            TcpListner.Results.CallDecidedTicks = DateTime.Now.Ticks;
+            TcpListner.Results.CallDecided = TcpListner.TrafficData;
 
             this.gameObject.SetActive(false);
             nextDialog.SetActive(true);

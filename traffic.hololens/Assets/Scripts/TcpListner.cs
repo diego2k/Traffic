@@ -25,6 +25,15 @@ public class TcpListner : MonoBehaviour
     public static ScenarioData ScenarioData { get; private set; }
     public static bool IsScenarioDataValid { get; private set; }
 
+    public static HoloLensResultMessage Results { get; set; }
+
+    public static void ResetListner()
+    {
+        Results = new HoloLensResultMessage();
+        IsTrafficDataValid = false;
+        IsScenarioDataValid = false;
+    }
+
 #if WINDOWS_UWP
     public static StreamSocket socket;
 
@@ -76,6 +85,11 @@ public class TcpListner : MonoBehaviour
                             Envelope env = JsonUtility.FromJson<Envelope>(cleanedString);
                             if (env.type == typeof(HoloLensTraffic).Name)
                             {
+                                if (!IsTrafficDataValid)
+                                {
+                                    Results.TrafficStartTicks = DateTime.Now.Ticks;
+                                }
+
                                 TrafficData = JsonUtility.FromJson<HoloLensTraffic>(env.content);
                                 IsTrafficDataValid = true;
                             }
@@ -83,6 +97,7 @@ public class TcpListner : MonoBehaviour
                             {
                                 ScenarioData = JsonUtility.FromJson<ScenarioData>(env.content);
                                 IsScenarioDataValid = true;
+                                Results.SzenarioName = ScenarioData.Name;
                             }
                         }
                         catch (Exception e)
@@ -107,7 +122,7 @@ public class TcpListner : MonoBehaviour
     private static async Task SendDataToCLient(string data)
     {
         Debug.Log("Send Data:" + data);
-        if(socket == null)
+        if (socket == null)
         {
             Debug.LogError("Socket is NULL!");
             return;
@@ -129,6 +144,16 @@ public class TcpListner : MonoBehaviour
                 readyForTraffic = true,
             }),
             type = typeof(HoloLensStatusMessage).Name
+        };
+        await SendDataToCLient(JsonUtility.ToJson(env));
+    }
+
+    public static async Task SendResults()
+    {
+        Envelope env = new Envelope()
+        {
+            content = JsonUtility.ToJson(Results),
+            type = typeof(HoloLensResultMessage).Name
         };
         await SendDataToCLient(JsonUtility.ToJson(env));
     }

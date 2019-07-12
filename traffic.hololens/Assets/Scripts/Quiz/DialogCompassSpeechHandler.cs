@@ -100,6 +100,12 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
 
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
+            TcpListner.Results.CompassTurnRight = answer;
+
+            // We are done, lets send the results.
+#if WINDOWS_UWP
+            TcpListner.SendResults();
+#endif
 
             Wait(3, () =>
             {
