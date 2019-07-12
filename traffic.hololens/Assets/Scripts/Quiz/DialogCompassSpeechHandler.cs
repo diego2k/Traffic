@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using HoloToolkit.Unity;
 
 public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
 {
     private Button activeButton;
+    private TextToSpeech textToSpeech;
 
     public Text Answer;
     public Button button1;
@@ -34,6 +36,14 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
         t_2.text = (TcpListner.ScenarioData.CompassCurrent + 30).ToString();
         t_3.text = (TcpListner.ScenarioData.CompassCurrent + 40).ToString();
         t_4.text = (TcpListner.ScenarioData.CompassCurrent + 50).ToString();
+    }
+
+    private void Awake()
+    {
+        textToSpeech = GetComponent<TextToSpeech>();
+        if (!TcpListner.IsScenarioDataValid) return;
+        
+        textToSpeech.StartSpeaking(string.Format("Turn to heading {0}.", TcpListner.ScenarioData.CompassTarget));
     }
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
