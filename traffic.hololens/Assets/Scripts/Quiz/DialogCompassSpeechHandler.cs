@@ -27,22 +27,36 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
     public void Start()
     {
         if (!TcpListner.IsScenarioDataValid) return;
-        t_n4.text = (TcpListner.ScenarioData.CompassCurrent - 40).ToString();
-        t_n3.text = (TcpListner.ScenarioData.CompassCurrent - 30).ToString();
-        t_n2.text = (TcpListner.ScenarioData.CompassCurrent - 20).ToString();
-        t_n1.text = (TcpListner.ScenarioData.CompassCurrent - 10).ToString();
-        t_0.text = TcpListner.ScenarioData.CompassCurrent.ToString();
-        t_1.text = (TcpListner.ScenarioData.CompassCurrent + 20).ToString();
-        t_2.text = (TcpListner.ScenarioData.CompassCurrent + 30).ToString();
-        t_3.text = (TcpListner.ScenarioData.CompassCurrent + 40).ToString();
-        t_4.text = (TcpListner.ScenarioData.CompassCurrent + 50).ToString();
+        t_n4.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent - 40);
+        t_n3.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent - 30);
+        t_n2.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent - 20);
+        t_n1.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent - 10);
+        t_0.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent);
+        t_1.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent + 10);
+        t_2.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent + 20);
+        t_3.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent + 30);
+        t_4.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent + 40);
+    }
+
+    private string CompassPosition(int degree)
+    {
+        if (degree > 360)
+        {
+            return (degree - 360).ToString();
+        }
+        else if (degree < 0)
+        {
+            return (360 + degree).ToString();
+        }
+        else
+            return degree.ToString();
     }
 
     private void Awake()
     {
         textToSpeech = GetComponent<TextToSpeech>();
         if (!TcpListner.IsScenarioDataValid) return;
-        
+
         textToSpeech.StartSpeaking(string.Format("Turn to heading {0}.", TcpListner.ScenarioData.CompassTarget));
     }
 

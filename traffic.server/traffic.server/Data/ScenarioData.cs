@@ -17,7 +17,7 @@
 
         public int CompassCurrent { get; set; }
 
-        public int CompassTarget { get; set; }
+        public string CompassTarget { get; set; }
 
         public bool CompassTurnRight { get; set; }
     }

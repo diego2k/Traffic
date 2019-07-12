@@ -16,7 +16,7 @@ public class ScenarioData
 
     public int CompassCurrent;
 
-    public int CompassTarget;
+    public string CompassTarget;
 
     public bool CompassTurnRight;
 }
