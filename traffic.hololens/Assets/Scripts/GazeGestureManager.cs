@@ -3,26 +3,27 @@ using UnityEngine.XR.WSA.Input;
 
 public class GazeGestureManager : MonoBehaviour
 {
-    // Represents the hologram that is currently being gazed at.
+    private static bool _firstTime = true;
+    private int _count = 0;
+    private Animator _animator;
+    private GestureRecognizer recognizer;
+
     public GameObject FocusedObject { get; private set; }
-
-    GestureRecognizer recognizer;
-
-    private static int Count = 0;
 
     public GameObject traffic;
 
-    // Use this for initialization
-    void Awake()
+    public GameObject animationObject;
+
+    public void Start()
     {
-        Count = 0;
+        Debug.Log("Start!");
+        _animator = animationObject.GetComponent<Animator>();
+        FocusedObject = null;
         TcpListner.ResetListner();
 
-        // Set up a GestureRecognizer to detect Select gestures.
         recognizer = new GestureRecognizer();
         recognizer.Tapped += (args) =>
         {
-            // Send an OnSelect message to the focused object and its ancestors.
             if (FocusedObject != null)
             {
                 FocusedObject.SendMessageUpwards("OnSelect", SendMessageOptions.DontRequireReceiver);
@@ -31,7 +32,11 @@ public class GazeGestureManager : MonoBehaviour
         recognizer.StartCapturingGestures();
     }
 
-    // Update is called once per frame
+    void Awake()
+    {
+        Debug.Log("Awake!");
+    }
+
     void Update()
     {
         GameObject oldFocusObject = FocusedObject;
@@ -52,28 +57,28 @@ public class GazeGestureManager : MonoBehaviour
         if (FocusedObject == null) return;
         if (FocusedObject != oldFocusObject)
         {
-            Debug.Log(FocusedObject.tag);
-            if (FocusedObject.tag == "Last_Left")
-            {
-                BroadcastMessage("OnShowRight", SendMessageOptions.DontRequireReceiver);
-            }
-            if (FocusedObject.tag == "Last_Right")
-            {
-                Debug.Log("Intaration count: " + Count);
-                if (Count++ < 2)
-                {
-                    BroadcastMessage("OnShowLeft", SendMessageOptions.DontRequireReceiver);
-                }
-                else
-                {
-#if WINDOWS_UWP
-                    TcpListner.SendReadyForTraffic();
-#endif
-                    this.gameObject.SetActive(false);
-                    traffic.SetActive(true);
-                }
-            }
-            FocusedObject.SendMessageUpwards("OnLookAt", SendMessageOptions.DontRequireReceiver);
+            if (!_animator.GetBool("AnimateSphere"))
+                _animator.SetBool("AnimateSphere", true);
         }
+    }
+
+    public void AnimationDone()
+    {
+        Debug.Log("AnimationDone!");
+
+        if (_firstTime)
+        {
+            if (_count++ < 3)
+            {
+                _animator.SetBool("AnimateSphere", true);
+                return;
+            }
+        }
+        _firstTime = false;
+#if WINDOWS_UWP
+        TcpListner.SendReadyForTraffic();
+#endif
+        this.gameObject.SetActive(false);
+        traffic.SetActive(true);
     }
 }

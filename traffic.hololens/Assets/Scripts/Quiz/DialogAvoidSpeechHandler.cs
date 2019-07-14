@@ -51,6 +51,7 @@ public class DialogAvoidSpeechHandler : MonoBehaviour, ISpeechHandler
         try
         {
             Image image = activeButton.GetComponent<Image>();
+            var oldColor = image.color;
             image.color = Color.yellow;
 
             var result = TcpListner.ScenarioData.TurnRight;
@@ -62,6 +63,8 @@ public class DialogAvoidSpeechHandler : MonoBehaviour, ISpeechHandler
             Wait(3, () =>
             {
                 this.gameObject.SetActive(false);
+                image.color = oldColor;
+                Answer.text = string.Empty;
                 compass.SetActive(true);
             });
 

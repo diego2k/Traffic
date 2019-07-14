@@ -52,6 +52,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
         try
         {
             Image image = activeButton.GetComponent<Image>();
+            var oldColor = image.color;
             image.color = Color.yellow;
 
             var result = TcpListner.ScenarioData.Collide;
@@ -63,6 +64,8 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
             Wait(3, () =>
             {
                 this.gameObject.SetActive(false);
+                image.color = oldColor;
+                Answer.text = string.Empty;
 
                 if (result)
                     nextDialog.SetActive(true);

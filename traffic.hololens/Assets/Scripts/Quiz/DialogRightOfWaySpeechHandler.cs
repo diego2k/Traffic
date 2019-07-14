@@ -58,6 +58,7 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
         try
         {
             Image image = activeButton.GetComponent<Image>();
+            var oldColor = image.color;
             image.color = Color.yellow;
             
             int result = TcpListner.ScenarioData.RightOfWay;
@@ -69,6 +70,9 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
             Wait(3, () =>
             {
                 this.gameObject.SetActive(false);
+                image.color = oldColor;
+                Answer.text = string.Empty;
+
                 nextDialog.SetActive(true);
             });
 
