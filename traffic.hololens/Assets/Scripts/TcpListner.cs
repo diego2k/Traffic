@@ -27,6 +27,8 @@ public class TcpListner : MonoBehaviour
 
     public static HoloLensResultMessage Results { get; set; }
 
+    public static int Points { get; set; }
+
     public static void ResetListner()
     {
         Results = new HoloLensResultMessage();

@@ -12,7 +12,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
     public Button button1;
     public Button button2;
     public GameObject nextDialog;
-    public GameObject compass;
+    public GameObject lastDialog;
 
     public void Start()
     {
@@ -59,6 +59,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
 
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
+            TcpListner.Points += (answer == result) ? 1 : 0;
             TcpListner.Results.Collide = answer;
 
             Wait(3, () =>
@@ -70,7 +71,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
                 if (result)
                     nextDialog.SetActive(true);
                 else
-                    compass.SetActive(true);
+                    lastDialog.SetActive(true);
             });
 
         }

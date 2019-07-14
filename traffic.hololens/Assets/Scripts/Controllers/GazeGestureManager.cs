@@ -18,8 +18,6 @@ public class GazeGestureManager : MonoBehaviour
     {
         Debug.Log("Start!");
         _animator = animationObject.GetComponent<Animator>();
-        FocusedObject = null;
-        TcpListner.ResetListner();
 
         recognizer = new GestureRecognizer();
         recognizer.Tapped += (args) =>
@@ -32,9 +30,10 @@ public class GazeGestureManager : MonoBehaviour
         recognizer.StartCapturingGestures();
     }
 
-    void Awake()
+    private void OnEnable()
     {
-        Debug.Log("Awake!");
+        FocusedObject = null;
+        TcpListner.ResetListner();
     }
 
     void Update()
@@ -68,7 +67,7 @@ public class GazeGestureManager : MonoBehaviour
 
         if (_firstTime)
         {
-            if (_count++ < 3)
+            if (_count++ < 2)
             {
                 _animator.SetBool("AnimateSphere", true);
                 return;

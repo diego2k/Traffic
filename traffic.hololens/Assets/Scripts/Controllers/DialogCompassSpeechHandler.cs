@@ -13,7 +13,7 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
     public Text Answer;
     public Button button1;
     public Button button2;
-    public GameObject observeIndikator;
+    public GameObject nextDialog;
     public Text t_n4;
     public Text t_n3;
     public Text t_n2;
@@ -25,6 +25,10 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
     public Text t_4;
 
     public void Start()
+    {
+    }
+
+    public void OnEnable()
     {
         if (!TcpListner.IsScenarioDataValid) return;
         t_n4.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent - 40);
@@ -101,6 +105,7 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
 
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
+            TcpListner.Points += (answer == result) ? 1 : 0;
             TcpListner.Results.CompassTurnRight = answer;
 
             // We are done, lets send the results.
@@ -114,7 +119,7 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
                 image.color = oldColor;
                 Answer.text = string.Empty;
 
-                observeIndikator.SetActive(true);
+                nextDialog.SetActive(true);
             });
 
         }
