@@ -1800,7 +1800,7 @@ MonoBehaviour:
   button1: {fileID: 56577280}
   button2: {fileID: 1719891558}
   nextDialog: {fileID: 264485917}
-  lastDialog: {fileID: 492603635}
+  lastDialog: {fileID: 938484562}
 --- !u!114 &408197185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2077,6 +2077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4939e1e4a495014fb57ec53e95f8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  centerHUD: {fileID: 746485214}
   traffic: {fileID: 1431324976}
   animationObject: {fileID: 177050827}
 --- !u!1 &492603635
@@ -3369,7 +3370,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 16
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -3380,7 +3381,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Watch out for traffic!
+  m_Text: '-'
 --- !u!222 &746485215
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4352,7 +4353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a41592f140e93478d33a310a30cf0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ServerIP: 192.168.2.40
+  ServerIP: 192.168.137.1
   ConnectionPort: 11000
 --- !u!1001 &1067071968
 Prefab:

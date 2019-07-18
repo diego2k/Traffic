@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.WSA.Input;
 
 public class GazeGestureManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class GazeGestureManager : MonoBehaviour
     private int _count = 0;
     private Animator _animator;
     private GestureRecognizer recognizer;
+    public Text centerHUD;
 
     public GameObject FocusedObject { get; private set; }
 
@@ -33,6 +35,7 @@ public class GazeGestureManager : MonoBehaviour
     private void OnEnable()
     {
         FocusedObject = null;
+        centerHUD.text = "Watch out for traffic! Say: 'traffic'";
         TcpListner.ResetListner();
     }
 

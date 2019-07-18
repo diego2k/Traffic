@@ -22,7 +22,7 @@ public class PlaneSpeechHandler : MonoBehaviour, ISpeechHandler
         if (command == "traffic")
         {
             Debug.Log("User has decided.");
-            centerHUD.text = "Decide now!";
+            centerHUD.text = "Decide now! Say 'decided'";
             TcpListner.Results.CallTrafficTicks = DateTime.Now.Ticks;
             TcpListner.Results.CallTraffic = TcpListner.TrafficData;
         }

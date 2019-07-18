@@ -5,7 +5,7 @@
     "RightOfWay": 1,
     "TurnRight": false,
     "CompassCurrent": 100,
-    "CompassTarget": 120,
+    "CompassTarget": "one two zero",
     "CompassTurnRight": true
   },
   {
@@ -14,7 +14,7 @@
     "RightOfWay": 2,
     "TurnRight": false,
     "CompassCurrent": 50,
-    "CompassTarget": 0,
-    "CompassTurnRight": false
+    "CompassTarget": "one two zero",
+    "CompassTurnRight": true
   }
 ]

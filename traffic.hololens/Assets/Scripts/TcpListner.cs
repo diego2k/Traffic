@@ -27,7 +27,16 @@ public class TcpListner : MonoBehaviour
 
     public static HoloLensResultMessage Results { get; set; }
 
-    public static int Points { get; set; }
+    public static int Points
+    {
+        get
+        {
+            return (Results.Collide == ScenarioData.Collide ? 1 : 0) +
+            (Results.RightOfWay == ScenarioData.RightOfWay ? 1 : 0) +
+            (Results.TurnRight == ScenarioData.TurnRight ? 1 : 0) +
+            (Results.CompassTurnRight == ScenarioData.CompassTurnRight ? 1 : 0);
+        }
+    }
 
     public static void ResetListner()
     {
