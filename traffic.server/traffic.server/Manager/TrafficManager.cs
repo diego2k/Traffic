@@ -102,20 +102,16 @@ namespace traffic.server.Manager
             {
                 var result = JsonConvert.DeserializeObject(env.Content, typeof(HoloLensResultMessage)) as HoloLensResultMessage;
 
-                // TODO: calculate
-                int distTraffic = 0;
-                int distDecided = 0;
-
                 if (!File.Exists(PATH))
                 {
                     using (StreamWriter sw = File.CreateText(PATH))
                     {
-                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallTrafficTime\tCallDecidedTime\tDistanceTraffic\tDistanceDecided");
+                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallTrafficTime\tCallDecidedTime");
                     }
                 }
                 using (StreamWriter sw = File.AppendText(PATH))
                 {
-                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.TurnRight}\t{result.CompassTurnRight}\t{result.TrafficStartTicks}\t{result.CallTrafficTicks}\t{result.CallDecidedTicks}\t{distTraffic}\t{distDecided}");
+                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.TurnRight}\t{result.CompassTurnRight}\t{result.TrafficStartTicks}\t{result.CallTrafficTicks}\t{result.CallDecidedTicks}");
                 }
             }
         }
@@ -176,6 +172,24 @@ namespace traffic.server.Manager
 
         private (float x, float y, float z) CalculateTarget(TrafficData me, TrafficData traffic)
         {
+            Func<double, double, double, Matrix<double>> I_eg = delegate (double longitude, double latitude, double radius)
+            {
+                return DenseMatrix.OfArray(new double[,] {
+                {-Math.Cos(longitude)*Math.Sin(latitude),  -Math.Sin(longitude), -Math.Cos(longitude)*Math.Cos(latitude), radius*Math.Cos(longitude)*Math.Cos(latitude)},
+                {-Math.Sin(longitude)*Math.Sin(longitude),  Math.Cos(longitude), -Math.Sin(longitude)*Math.Cos(latitude), radius*Math.Sin(longitude)*Math.Cos(latitude)},
+                { Math.Cos(latitude),                       0,                   -Math.Sin(latitude),                     radius*Math.Sin(latitude)},
+                { 0,                                        0,                   0,                                       1} });
+            };
+
+            Func<double, double, double, Matrix<double>> I_gb = delegate (double yaw, double pitch, double roll)
+            {
+                return DenseMatrix.OfArray(new double[,] {
+                { Math.Cos(yaw)*Math.Cos(pitch), Math.Cos(yaw)*Math.Sin(pitch)*Math.Sin(roll) - Math.Sin(yaw)*Math.Cos(roll), Math.Cos(yaw)*Math.Sin(pitch)*Math.Cos(roll) + Math.Sin(yaw)*Math.Sin(roll), 0},
+                { Math.Sin(yaw)*Math.Cos(pitch), Math.Sin(yaw)*Math.Sin(pitch)*Math.Sin(roll) + Math.Cos(yaw)*Math.Cos(roll), Math.Sin(yaw)*Math.Sin(pitch)*Math.Cos(roll) - Math.Cos(yaw)*Math.Sin(roll), 0},
+                {-Math.Sin(pitch),               Math.Cos(pitch)*Math.Sin(roll),                                              Math.Cos(pitch)*Math.Cos(roll),                                              0},
+                { 0,                             0,                                                                           0,                                                                           1} });
+            };
+
             Func<double, double, double, Matrix<double>> I_ge = delegate (double longitude, double latitude, double radius)
             {
                 return DenseMatrix.OfArray(new double[,] {
@@ -184,6 +198,7 @@ namespace traffic.server.Manager
                 {-Math.Cos(longitude)*Math.Cos(latitude), -Math.Sin(longitude)*Math.Cos(latitude), -Math.Sin(latitude), radius},
                 { 0,                                       0,                                       0,                  1} });
             };
+
             Func<double, double, double, Matrix<double>> I_bg = delegate (double yaw, double pitch, double roll)
             {
                 return DenseMatrix.OfArray(new double[,] {
@@ -192,6 +207,7 @@ namespace traffic.server.Manager
                 {Math.Cos(yaw)*Math.Sin(pitch)*Math.Cos(roll) + Math.Sin(yaw)*Math.Sin(roll), Math.Sin(yaw)*Math.Sin(pitch)*Math.Cos(roll) - Math.Cos(yaw)*Math.Sin(roll), Math.Cos(pitch)*Math.Cos(roll), 0},
                 { 0,                                                                          0,                                                                           0,                              1} });
             };
+
             Func<double, double, double, Matrix<double>> d_e = delegate (double longitude, double latitude, double radius)
             {
                 return DenseMatrix.OfArray(new double[,] {
@@ -200,18 +216,24 @@ namespace traffic.server.Manager
                 {radius*Math.Sin(latitude)},
                 {1} });
             };
+
             const double r = 6355707;
 
-            var ibg = I_bg(me.YawAngle, me.PitchAngle, me.RollAngle);
-            var ige = I_ge(me.Longitude, me.Latitude, r);
-            var de = d_e(traffic.Longitude, traffic.Latitude, r);
+            var I_eb = I_eg(traffic.Longitude, traffic.Latitude, r) * I_gb(traffic.YawAngle, traffic.PitchAngle, traffic.RollAngle);
 
-            var d_b = I_bg(me.YawAngle, me.PitchAngle, me.RollAngle) *
-                      I_ge(me.Longitude, me.Latitude, r) *
-                      d_e(traffic.Longitude, traffic.Latitude, r);
+            var I_bg_x_I_ge = I_bg(me.YawAngle, me.PitchAngle, me.RollAngle) *
+                              I_ge(me.Longitude, me.Latitude, r);
 
-            return ((float)d_b[1, 0], -(float)d_b[2, 0], (float)d_b[0, 0]);
+            var D_b = I_bg_x_I_ge * d_e(traffic.Longitude, traffic.Latitude, r);
+
+            var I_bb = I_bg_x_I_ge * I_eb;
+
+            return ((float)D_b[1, 0], -(float)D_b[2, 0], (float)D_b[0, 0]);
         }
 
+        private static double RadianToDegree(double angle)
+        {
+            return angle * (180.0 / Math.PI);
+        }
     }
 }

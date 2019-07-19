@@ -98,6 +98,7 @@ public class TcpListner : MonoBehaviour
                             {
                                 if (!IsTrafficDataValid)
                                 {
+                                    Debug.Log("SET START TICKS");
                                     Results.TrafficStartTicks = DateTime.Now.Ticks;
                                 }
 
