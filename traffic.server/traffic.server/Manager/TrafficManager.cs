@@ -111,7 +111,7 @@ namespace traffic.server.Manager
                 }
                 using (StreamWriter sw = File.AppendText(PATH))
                 {
-                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.TurnRight}\t{result.CompassTurnRight}\t{result.TrafficStartTicks}\t{result.CallTrafficTicks}\t{result.CallDecidedTicks}");
+                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.Turn}\t{result.CompassTurn}\t{result.TrafficStartTicks}\t{result.CallTrafficTicks}\t{result.CallDecidedTicks}");
                 }
             }
         }

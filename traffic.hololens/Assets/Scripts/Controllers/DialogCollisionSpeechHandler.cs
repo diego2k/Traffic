@@ -6,7 +6,7 @@ using System.Collections;
 
 public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
 {
-    private Button activeButton;
+    private Button _activeButton;
 
     public Text Answer;
     public Button button1;
@@ -14,14 +14,10 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
     public GameObject nextDialog;
     public GameObject lastDialog;
 
-    public void Start()
-    {
-    }
-
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        Debug.Log("DialogCollisionSpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
@@ -33,13 +29,13 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
             case "yes":
                 {
                     answer = true;
-                    activeButton = button1;
+                    _activeButton = button1;
                 }
                 break;
             case "no":
                 {
                     answer = false;
-                    activeButton = button2;
+                    _activeButton = button2;
                 }
                 break;
             default:
@@ -51,7 +47,7 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
         if (!TcpListner.IsScenarioDataValid) return;
         try
         {
-            Image image = activeButton.GetComponent<Image>();
+            Image image = _activeButton.GetComponent<Image>();
             var oldColor = image.color;
             image.color = Color.yellow;
 

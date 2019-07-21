@@ -7,8 +7,8 @@ using HoloToolkit.Unity;
 
 public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
 {
-    private Button activeButton;
-    private TextToSpeech textToSpeech;
+    private Button _activeButton;
+    private TextToSpeech _textToSpeech;
 
     public Text Answer;
     public Button button1;
@@ -23,10 +23,6 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
     public Text t_2;
     public Text t_3;
     public Text t_4;
-
-    public void Start()
-    {
-    }
 
     public void OnEnable()
     {
@@ -58,34 +54,34 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
 
     private void Awake()
     {
-        textToSpeech = GetComponent<TextToSpeech>();
+        _textToSpeech = GetComponent<TextToSpeech>();
         if (!TcpListner.IsScenarioDataValid) return;
 
-        textToSpeech.StartSpeaking(string.Format("Turn to heading {0}.", TcpListner.ScenarioData.CompassTarget));
+        _textToSpeech.StartSpeaking(string.Format("Turn to heading {0}.", TcpListner.ScenarioData.CompassTarget));
     }
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        Debug.Log("DialogCompassSpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
     public void SpeechCommands(string command)
     {
-        bool answer = false;
+        string answer = string.Empty;
         switch (command)
         {
             case "left":
                 {
-                    answer = false;
-                    activeButton = button1;
+                    answer = "L";
+                    _activeButton = button1;
                 }
                 break;
             case "right":
                 {
-                    answer = true;
-                    activeButton = button2;
+                    answer = "R";
+                    _activeButton = button2;
                 }
                 break;
             default:
@@ -97,15 +93,17 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
         if (!TcpListner.IsScenarioDataValid) return;
         try
         {
-            Image image = activeButton.GetComponent<Image>();
+            Image image = _activeButton.GetComponent<Image>();
             var oldColor = image.color;
             image.color = Color.yellow;
 
-            var result = TcpListner.ScenarioData.CompassTurnRight;
+            string result = TcpListner.ScenarioData.CompassTurn;
+            Debug.Log("Answer it should be L: " + result);
 
+            Debug.Log("Answer c: " + answer + " - " + result);
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
-            TcpListner.Results.CompassTurnRight = answer;
+            TcpListner.Results.CompassTurn = answer;
 
             // We are done, lets send the results.
 #if WINDOWS_UWP

@@ -1,7 +1,5 @@
 ﻿using HoloToolkit.Unity.InputModule;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +7,17 @@ public class PlaneSpeechHandler : MonoBehaviour, ISpeechHandler
 {
     public GameObject nextDialog;
     public Text centerHUD;
+    private bool _enableSpeechinput = false;
+
+    public void OnEnable()
+    {
+        _enableSpeechinput = true;
+    }
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
-        if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("PlaneSpeech: " + eventData.RecognizedText);
+        if (!_enableSpeechinput || eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
+        Debug.Log("PlaneSpeech.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
@@ -33,6 +37,7 @@ public class PlaneSpeechHandler : MonoBehaviour, ISpeechHandler
             TcpListner.Results.CallDecidedTicks = DateTime.Now.Ticks;
             TcpListner.Results.CallDecided = TcpListner.TrafficData;
 
+            _enableSpeechinput = false;
             this.gameObject.SetActive(false);
             nextDialog.SetActive(true);
         }

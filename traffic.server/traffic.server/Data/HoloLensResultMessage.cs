@@ -19,9 +19,9 @@ namespace traffic.server.Data
         /// </summary>
         public int RightOfWay { get; set; }
 
-        public bool TurnRight { get; set; }
+        public string Turn { get; set; }
 
-        public bool CompassTurnRight { get; set; }
+        public string CompassTurn { get; set; }
 
         public long TrafficStartTicks { get; set; }
 

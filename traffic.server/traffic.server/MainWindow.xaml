@@ -213,7 +213,7 @@
                           IsReadOnly="True"
                           SelectedItem="{Binding SelectedScenario}"/>
 
-                <Button Margin="10" Content="Send Selected Scenario" 
+                <Button Margin="10" Content="Start Selected Scenario" 
                         Command="{Binding SendScenarioCommand}"></Button>
             </StackPanel>
         </GroupBox>

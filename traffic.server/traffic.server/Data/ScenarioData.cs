@@ -13,12 +13,12 @@
         /// </summary>
         public int RightOfWay { get; set; }
 
-        public bool TurnRight { get; set; }
+        public string Turn { get; set; }
 
         public int CompassCurrent { get; set; }
 
         public string CompassTarget { get; set; }
 
-        public bool CompassTurnRight { get; set; }
+        public string CompassTurn { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class HoloLensResultMessage
 {
@@ -13,9 +14,9 @@ public class HoloLensResultMessage
     /// </summary>
     public int RightOfWay;
 
-    public bool TurnRight;
+    public string Turn;
 
-    public bool CompassTurnRight;
+    public string CompassTurn;
 
     public long TrafficStartTicks;
 
@@ -27,4 +28,9 @@ public class HoloLensResultMessage
 
     public HoloLensTraffic CallDecided;
 
+    public override string ToString()
+    {
+        Debug.Log("SzenarioName " + SzenarioName + " Collide " + Collide + " RightOfWay " + RightOfWay + " Turn " + Turn + " CompassTurn " + CompassTurn);
+        return base.ToString();
+    }
 }

@@ -32,9 +32,9 @@ public class TcpListner : MonoBehaviour
         get
         {
             return (Results.Collide == ScenarioData.Collide ? 1 : 0) +
-            (Results.RightOfWay == ScenarioData.RightOfWay ? 1 : 0) +
-            (Results.TurnRight == ScenarioData.TurnRight ? 1 : 0) +
-            (Results.CompassTurnRight == ScenarioData.CompassTurnRight ? 1 : 0);
+            (ScenarioData.RightOfWay > 0 && Results.RightOfWay == ScenarioData.RightOfWay ? 1 : 0) +
+            (Results.Turn == ScenarioData.Turn ? 1 : 0) +
+            (Results.CompassTurn == ScenarioData.CompassTurn ? 1 : 0);
         }
     }
 
@@ -54,15 +54,18 @@ public class TcpListner : MonoBehaviour
         IsScenarioDataValid = false;
         if (socket == null)
         {
-            Task.Run(() => StartSocket());
+            Task.Run(async() =>
+            {
+                while (true)
+                {
+                    await StartSocket();
+                    await Task.Delay(new TimeSpan(0, 0, 10));
+                }
+            });
         }
     }
 
-    void Update()
-    {
-    }
-
-    public async void StartSocket()
+    public async Task StartSocket()
     {
         Debug.Log("Starting TCP listner ...");
         socket = new StreamSocket();
@@ -72,59 +75,57 @@ public class TcpListner : MonoBehaviour
         try
         {
             await socket.ConnectAsync(serverHost, ConnectionPort.ToString());
-            try
+            using (DataReader reader = new DataReader(socket.InputStream))
             {
-                using (DataReader reader = new DataReader(socket.InputStream))
+                reader.InputStreamOptions = InputStreamOptions.ReadAhead;
+
+                while (true)
                 {
-                    reader.InputStreamOptions = InputStreamOptions.ReadAhead;
-
-                    while (true)
+                    IAsyncOperation<uint> taskLoad = reader.LoadAsync(900);
+                    //taskLoad.AsTask().Wait();
+                    await taskLoad.AsTask().ConfigureAwait(false);
+                    var bytesRead = taskLoad.GetResults();
+                    if (bytesRead != 900)
                     {
-                        IAsyncOperation<uint> taskLoad = reader.LoadAsync(900);
-                        //taskLoad.AsTask().Wait();
-                        await taskLoad.AsTask().ConfigureAwait(false);
-                        var bytesRead = taskLoad.GetResults();
-                        if (bytesRead != 900)
-                        {
-                            var x = 0;
-                        }
-                        string cleanedString = reader.ReadString(bytesRead);
+                        var x = 0;
+                    }
+                    string cleanedString = reader.ReadString(bytesRead);
 
-                        try
+                    try
+                    {
+                        //Debug.Log(cleanedString);
+                        Envelope env = JsonUtility.FromJson<Envelope>(cleanedString);
+                        if (env.type == typeof(HoloLensTraffic).Name)
                         {
-                            //Debug.Log(cleanedString);
-                            Envelope env = JsonUtility.FromJson<Envelope>(cleanedString);
-                            if (env.type == typeof(HoloLensTraffic).Name)
+                            if (!IsTrafficDataValid)
                             {
-                                if (!IsTrafficDataValid)
-                                {
-                                    Debug.Log("SET START TICKS");
-                                    Results.TrafficStartTicks = DateTime.Now.Ticks;
-                                }
+                                Results.TrafficStartTicks = DateTime.Now.Ticks;
+                            }
 
-                                TrafficData = JsonUtility.FromJson<HoloLensTraffic>(env.content);
-                                IsTrafficDataValid = true;
-                            }
-                            else if (env.type == typeof(ScenarioData).Name)
-                            {
-                                ScenarioData = JsonUtility.FromJson<ScenarioData>(env.content);
-                                IsScenarioDataValid = true;
-                                Results.SzenarioName = ScenarioData.Name;
-                            }
+                            TrafficData = JsonUtility.FromJson<HoloLensTraffic>(env.content);
+                            IsTrafficDataValid = true;
                         }
-                        catch (Exception e)
+                        else if (env.type == typeof(ScenarioData).Name)
                         {
-                            Debug.Log(e.Message);
+                            ScenarioData = JsonUtility.FromJson<ScenarioData>(env.content);
+    Debug.Log(env.content+ " " + ScenarioData.CompassTurn);
+
+                            IsScenarioDataValid = true;
+                            Results.SzenarioName = ScenarioData.Name;
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log(e.Message);
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Debug.Log(e.Message);
-            }
         }
         catch (System.Runtime.InteropServices.COMException e)
+        {
+            Debug.Log(e.Message);
+        }
+        catch (Exception e)
         {
             Debug.Log(e.Message);
         }

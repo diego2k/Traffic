@@ -57,6 +57,7 @@ public class GazeGestureManager : MonoBehaviour
         }
 
         if (FocusedObject == null) return;
+        if (!TcpListner.IsScenarioDataValid) return;
         if (FocusedObject != oldFocusObject)
         {
             if (!_animator.GetBool("AnimateSphere"))

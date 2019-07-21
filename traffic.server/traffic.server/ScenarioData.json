@@ -3,18 +3,16 @@
     "Name": "Szenario A",
     "Collide": true,
     "RightOfWay": 1,
-    "TurnRight": false,
+    "Turn": "R",
     "CompassCurrent": 100,
-    "CompassTarget": "one two zero",
-    "CompassTurnRight": true
+    "CompassTarget": "two zero",
+    "CompassTurn": "L"
   },
   {
     "Name": "Szenario B",
     "Collide": false,
-    "RightOfWay": 2,
-    "TurnRight": false,
     "CompassCurrent": 50,
     "CompassTarget": "one two zero",
-    "CompassTurnRight": true
+    "CompassTurn": "R"
   }
 ]

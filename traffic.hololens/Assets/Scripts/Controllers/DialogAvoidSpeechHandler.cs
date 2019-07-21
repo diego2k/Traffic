@@ -6,39 +6,35 @@ using System.Collections;
 
 public class DialogAvoidSpeechHandler : MonoBehaviour, ISpeechHandler
 {
-    private Button activeButton;
+    private Button _activeButton;
 
     public Text Answer;
     public Button button1;
     public Button button2;
-    public GameObject compass;
-
-    public void Start()
-    {
-    }
+    public GameObject nextDialog;
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        Debug.Log("DialogAvoidSpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
     public void SpeechCommands(string command)
     {
-        bool answer = false;
+        string answer = string.Empty;
         switch (command)
         {
             case "left":
                 {
-                    answer = false;
-                    activeButton = button1;
+                    answer = "L";
+                    _activeButton = button1;
                 }
                 break;
             case "right":
                 {
-                    answer = true;
-                    activeButton = button2;
+                    answer = "R";
+                    _activeButton = button2;
                 }
                 break;
             default:
@@ -50,22 +46,23 @@ public class DialogAvoidSpeechHandler : MonoBehaviour, ISpeechHandler
         if (!TcpListner.IsScenarioDataValid) return;
         try
         {
-            Image image = activeButton.GetComponent<Image>();
+            Image image = _activeButton.GetComponent<Image>();
             var oldColor = image.color;
             image.color = Color.yellow;
 
-            var result = TcpListner.ScenarioData.TurnRight;
+            var result = TcpListner.ScenarioData.Turn;
 
+            Debug.Log("Answer1: " + answer + " " + result);
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
-            TcpListner.Results.TurnRight = answer;
+            TcpListner.Results.Turn = answer;
 
             Wait(3, () =>
             {
                 this.gameObject.SetActive(false);
                 image.color = oldColor;
                 Answer.text = string.Empty;
-                compass.SetActive(true);
+                nextDialog.SetActive(true);
             });
 
         }

@@ -29,7 +29,6 @@ namespace traffic.server.Net
     {
         private int _port = 0;
         public static ManualResetEvent allDone = new ManualResetEvent(false);
-        public static Dictionary<string, string> dict = new Dictionary<string, string>();
         private static Socket handler;
         public event EventHandler<TcpDataReceivedEventArgs> TcpDataReceived;
 
@@ -84,8 +83,6 @@ namespace traffic.server.Net
             Socket listener = (Socket)ar.AsyncState;
             handler = listener.EndAccept(ar);
 
-            var date = DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss");
-            dict.Add(date, "Client Connected");
             // Create the state object.  
             StateObject state = new StateObject();
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,

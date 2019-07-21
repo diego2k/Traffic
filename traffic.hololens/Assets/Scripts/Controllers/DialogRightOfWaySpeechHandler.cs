@@ -6,7 +6,7 @@ using System.Collections;
 
 public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
 {
-    private Button activeButton;
+    private Button _activeButton;
 
     public Text Answer;
     public Button button1;
@@ -14,14 +14,10 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
     public Button button3;
     public GameObject nextDialog;
 
-    void Start()
-    {
-    }
-
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        Debug.Log("DialogRightOfWaySpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
@@ -33,19 +29,19 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
             case "one":
                 {
                     answer = 1;
-                    activeButton = button1;
+                    _activeButton = button1;
                 }
                 break;
             case "two":
                 {
                     answer = 2;
-                    activeButton = button2;
+                    _activeButton = button2;
                 }
                 break;
             case "three":
                 {
                     answer = 2;
-                    activeButton = button3;
+                    _activeButton = button3;
                 }
                 break;
             default:
@@ -57,7 +53,7 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
         if (!TcpListner.IsScenarioDataValid) return;
         try
         {
-            Image image = activeButton.GetComponent<Image>();
+            Image image = _activeButton.GetComponent<Image>();
             var oldColor = image.color;
             image.color = Color.yellow;
             
