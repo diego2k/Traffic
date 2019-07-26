@@ -9,6 +9,7 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
 {
     private Button _activeButton;
     private TextToSpeech _textToSpeech;
+    private bool _isSend; // HACK: Speech handler gets executed twice. Research needed. 
 
     public Text Answer;
     public Button button1;
@@ -27,6 +28,7 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
     public void OnEnable()
     {
         if (!TcpListner.IsScenarioDataValid) return;
+        _isSend = false;
         t_n4.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent - 40);
         t_n3.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent - 30);
         t_n2.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent - 20);
@@ -98,18 +100,20 @@ public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
             image.color = Color.yellow;
 
             string result = TcpListner.ScenarioData.CompassTurn;
-            Debug.Log("Answer it should be L: " + result);
 
-            Debug.Log("Answer c: " + answer + " - " + result);
+            Debug.Log("Answer: " + answer + " - " + result);
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
             TcpListner.Results.CompassTurn = answer;
 
             // We are done, lets send the results.
+            if (!_isSend)
+            {
+                _isSend = true;
 #if WINDOWS_UWP
             TcpListner.SendResults();
 #endif
-
+            }
             Wait(3, () =>
             {
                 gameObject.SetActive(false);
