@@ -157,9 +157,9 @@ namespace traffic.server.Manager
                 PosX = pos.x,
                 PosY = pos.y,
                 PosZ = pos.z,
-                RotationX = 0,
-                RotationY = 0,
-                RotationZ = 0
+                RotationX = pos.rotationX,
+                RotationY = pos.rotationY,
+                RotationZ = pos.rotationZ
             };
             // Console.WriteLine($"{traffic.PosX} {traffic.PosY} {traffic.PosZ}");
             var env = new Envelope()
@@ -170,7 +170,7 @@ namespace traffic.server.Manager
             _tcpListner.Send(JsonConvert.SerializeObject(env));
         }
 
-        private (float x, float y, float z) CalculateTarget(TrafficData me, TrafficData traffic)
+        private (float x, float y, float z, float rotationX, float rotationY, float rotationZ) CalculateTarget(TrafficData me, TrafficData traffic)
         {
             Func<double, double, double, Matrix<double>> I_eg = delegate (double longitude, double latitude, double radius)
             {
@@ -228,12 +228,16 @@ namespace traffic.server.Manager
 
             var I_bb = I_bg_x_I_ge * I_eb;
 
-            return ((float)D_b[1, 0], -(float)D_b[2, 0], (float)D_b[0, 0]);
+            float rotY = - RadianToDegree(Math.Atan2(I_bb[1, 0], I_bb[0, 0]));
+            float rotX = RadianToDegree(Math.Atan2(I_bb[2, 1], I_bb[2, 2]));
+            float rotZ = RadianToDegree(Math.Asin(-I_bb[2, 0]));
+
+            return ((float)D_b[1, 0], -(float)D_b[2, 0], (float)D_b[0, 0], rotX, rotY, rotZ);
         }
 
-        private static double RadianToDegree(double angle)
+        private static float RadianToDegree(double angle)
         {
-            return angle * (180.0 / Math.PI);
+            return (float) (angle * (180.0 / Math.PI));
         }
     }
 }

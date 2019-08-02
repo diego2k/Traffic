@@ -19,6 +19,10 @@ public class TrafficControl : MonoBehaviour
                 TcpListner.TrafficData.PosX,
                 TcpListner.TrafficData.PosY,
                 TcpListner.TrafficData.PosZ);
+            transform.localRotation = Quaternion.Euler(
+                TcpListner.TrafficData.RotationX,
+                TcpListner.TrafficData.RotationY,
+                TcpListner.TrafficData.RotationZ);
         }
         else
         {

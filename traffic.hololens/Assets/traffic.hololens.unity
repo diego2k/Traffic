@@ -1116,7 +1116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Keywords:
-  - Keyword: One
+  - Keyword: A
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1133,7 +1133,7 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-  - Keyword: Two
+  - Keyword: B
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -1150,7 +1150,7 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
-  - Keyword: Three
+  - Keyword: C
     Response:
       m_PersistentCalls:
         m_Calls:
@@ -3306,11 +3306,11 @@ MonoBehaviour:
   PersistentKeywords: 0
   RecognizerStart: 0
   Keywords:
-  - Keyword: One
+  - Keyword: A
     KeyCode: 0
-  - Keyword: Two
+  - Keyword: B
     KeyCode: 0
-  - Keyword: Three
+  - Keyword: C
     KeyCode: 0
   - Keyword: Yes
     KeyCode: 0
@@ -4349,7 +4349,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Say: ''3'' - Nobody has the right of way'
+  m_Text: 'Say: ''C'' - Nobody has the right of way'
 --- !u!222 &1049351055
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7235,7 +7235,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Say: ''1'' - Traffic has the right of way'
+  m_Text: 'Say: ''A'' - Traffic has the right of way'
 --- !u!222 &1734620803
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7528,7 +7528,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Say: ''2'' - I have the right of way'
+  m_Text: 'Say: ''B'' - I have the right of way'
 --- !u!222 &1839355669
 CanvasRenderer:
   m_ObjectHideFlags: 0
