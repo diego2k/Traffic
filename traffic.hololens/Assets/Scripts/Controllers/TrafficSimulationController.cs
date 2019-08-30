@@ -2,23 +2,25 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
-public class PlaneSpeechHandler : MonoBehaviour, ISpeechHandler
+public class TrafficSimulationController : MonoBehaviour, ISpeechHandler
 {
     public GameObject nextDialog;
     public Text centerHUD;
     private bool _enableSpeechinput = false;
 
-    public void OnEnable()
-    {
-        _enableSpeechinput = true;
-    }
-
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (!_enableSpeechinput || eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("PlaneSpeech.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        Debug.Log("TrafficController.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
+    }
+
+    private void OnEnable()
+    {
+        _enableSpeechinput = true;
+        centerHUD.text = "Watch out for traffic! Say 'traffic'";
     }
 
     public void SpeechCommands(string command)
@@ -42,4 +44,24 @@ public class PlaneSpeechHandler : MonoBehaviour, ISpeechHandler
             nextDialog.SetActive(true);
         }
     }
+
+    void Update()
+    {
+        if (TcpListner.IsTrafficDataValid)
+        {
+            transform.position = new Vector3(
+                TcpListner.TrafficData.PosX,
+                TcpListner.TrafficData.PosY,
+                TcpListner.TrafficData.PosZ);
+            transform.localRotation = Quaternion.Euler(
+                TcpListner.TrafficData.RotationX,
+                TcpListner.TrafficData.RotationY,
+                TcpListner.TrafficData.RotationZ);
+        }
+        else
+        {
+            transform.position = new Vector3(0, 0, -10000);
+        }
+    }
+
 }

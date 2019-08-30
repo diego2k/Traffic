@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EndScreen : MonoBehaviour
+public class EndScreenController : MonoBehaviour
 {
     private DateTime _startTime;
 

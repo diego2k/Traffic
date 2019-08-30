@@ -4,37 +4,44 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 
-public class DialogAvoidSpeechHandler : MonoBehaviour, ISpeechHandler
+public class DialogRightOfWayController : MonoBehaviour, ISpeechHandler
 {
     private Button _activeButton;
 
     public Text Answer;
     public Button button1;
     public Button button2;
+    public Button button3;
     public GameObject nextDialog;
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("DialogAvoidSpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        Debug.Log("DialogRightOfWaySpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
     public void SpeechCommands(string command)
     {
-        string answer = string.Empty;
+        int answer = 0;
         switch (command)
         {
-            case "left":
+            case "a":
                 {
-                    answer = "L";
+                    answer = 1;
                     _activeButton = button1;
                 }
                 break;
-            case "right":
+            case "b":
                 {
-                    answer = "R";
+                    answer = 2;
                     _activeButton = button2;
+                }
+                break;
+            case "c":
+                {
+                    answer = 2;
+                    _activeButton = button3;
                 }
                 break;
             default:
@@ -49,19 +56,19 @@ public class DialogAvoidSpeechHandler : MonoBehaviour, ISpeechHandler
             Image image = _activeButton.GetComponent<Image>();
             var oldColor = image.color;
             image.color = Color.yellow;
+            
+            int result = TcpListner.ScenarioData.RightOfWay;
 
-            var result = TcpListner.ScenarioData.Turn;
-
-            Debug.Log("Answer1: " + answer + " " + result);
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
-            TcpListner.Results.Turn = answer;
+            TcpListner.Results.RightOfWay = answer;
 
             Wait(3, () =>
             {
                 this.gameObject.SetActive(false);
                 image.color = oldColor;
                 Answer.text = string.Empty;
+
                 nextDialog.SetActive(true);
             });
 

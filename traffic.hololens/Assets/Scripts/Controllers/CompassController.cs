@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using HoloToolkit.Unity;
 
-public class DialogCompassSpeechHandler : MonoBehaviour, ISpeechHandler
+public class CompassController : MonoBehaviour, ISpeechHandler
 {
     private Button _activeButton;
     private TextToSpeech _textToSpeech;

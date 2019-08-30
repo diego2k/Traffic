@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 
-public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
+public class DialogAvoidController : MonoBehaviour, ISpeechHandler
 {
     private Button _activeButton;
 
@@ -12,29 +12,28 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
     public Button button1;
     public Button button2;
     public GameObject nextDialog;
-    public GameObject lastDialog;
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("DialogCollisionSpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        Debug.Log("DialogAvoidSpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
     public void SpeechCommands(string command)
     {
-        bool answer = false;
+        string answer = string.Empty;
         switch (command)
         {
-            case "yes":
+            case "left":
                 {
-                    answer = true;
+                    answer = "L";
                     _activeButton = button1;
                 }
                 break;
-            case "no":
+            case "right":
                 {
-                    answer = false;
+                    answer = "R";
                     _activeButton = button2;
                 }
                 break;
@@ -51,22 +50,19 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
             var oldColor = image.color;
             image.color = Color.yellow;
 
-            var result = TcpListner.ScenarioData.Collide;
+            var result = TcpListner.ScenarioData.Turn;
 
+            Debug.Log("Answer1: " + answer + " " + result);
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
-            TcpListner.Results.Collide = answer;
+            TcpListner.Results.Turn = answer;
 
             Wait(3, () =>
             {
                 this.gameObject.SetActive(false);
                 image.color = oldColor;
                 Answer.text = string.Empty;
-
-                if (result)
-                    nextDialog.SetActive(true);
-                else
-                    lastDialog.SetActive(true);
+                nextDialog.SetActive(true);
             });
 
         }
@@ -86,5 +82,4 @@ public class DialogCollisionSpeechHandler : MonoBehaviour, ISpeechHandler
         yield return new WaitForSeconds(time);
         callback();
     }
-
 }

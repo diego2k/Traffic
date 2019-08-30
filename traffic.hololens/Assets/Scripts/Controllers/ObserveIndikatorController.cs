@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.XR.WSA.Input;
 
-public class GazeGestureManager : MonoBehaviour
+public class ObserveIndikatorController : MonoBehaviour
 {
     private static bool _firstTime = true;
     private int _count = 0;
@@ -12,7 +12,7 @@ public class GazeGestureManager : MonoBehaviour
 
     public GameObject FocusedObject { get; private set; }
 
-    public GameObject traffic;
+    public GameObject nextDialog;
 
     public GameObject animationObject;
 
@@ -35,7 +35,7 @@ public class GazeGestureManager : MonoBehaviour
     private void OnEnable()
     {
         FocusedObject = null;
-        centerHUD.text = "Watch out for traffic! Say: 'traffic'";
+        centerHUD.text = "Follow the ball!";
         TcpListner.ResetListner();
     }
 
@@ -71,7 +71,7 @@ public class GazeGestureManager : MonoBehaviour
 
         if (_firstTime)
         {
-            if (_count++ < 2)
+            if (_count++ < 0)
             {
                 _animator.SetBool("AnimateSphere", true);
                 return;
@@ -82,6 +82,6 @@ public class GazeGestureManager : MonoBehaviour
         TcpListner.SendReadyForTraffic();
 #endif
         this.gameObject.SetActive(false);
-        traffic.SetActive(true);
+        nextDialog.SetActive(true);
     }
 }

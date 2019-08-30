@@ -4,44 +4,39 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 
-public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
+public class DialogCollisionController : MonoBehaviour, ISpeechHandler
 {
     private Button _activeButton;
 
     public Text Answer;
     public Button button1;
     public Button button2;
-    public Button button3;
     public GameObject nextDialog;
+    public GameObject lastDialog;
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData == null || string.IsNullOrEmpty(eventData.RecognizedText)) return;
-        Debug.Log("DialogRightOfWaySpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
+        Debug.Log("DialogCollisionSpeechHandler.OnSpeechKeywordRecognized: " + eventData.RecognizedText);
         SpeechCommands(eventData.RecognizedText.ToLower());
     }
 
     public void SpeechCommands(string command)
     {
-        int answer = 0;
+        Debug.Log("?##########################################-" + command+"-");
+        bool answer = false;
         switch (command)
         {
-            case "a":
+            case "yes":
                 {
-                    answer = 1;
+                    answer = true;
                     _activeButton = button1;
                 }
                 break;
-            case "b":
+            case "no":
                 {
-                    answer = 2;
+                    answer = false;
                     _activeButton = button2;
-                }
-                break;
-            case "c":
-                {
-                    answer = 2;
-                    _activeButton = button3;
                 }
                 break;
             default:
@@ -56,12 +51,12 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
             Image image = _activeButton.GetComponent<Image>();
             var oldColor = image.color;
             image.color = Color.yellow;
-            
-            int result = TcpListner.ScenarioData.RightOfWay;
+
+            var result = TcpListner.ScenarioData.Collide;
 
             Answer.text = (answer == result) ? "Correct" : "Wrong";
             Answer.color = (answer == result) ? Color.green : Color.red;
-            TcpListner.Results.RightOfWay = answer;
+            TcpListner.Results.Collide = answer;
 
             Wait(3, () =>
             {
@@ -69,7 +64,10 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
                 image.color = oldColor;
                 Answer.text = string.Empty;
 
-                nextDialog.SetActive(true);
+                if (result)
+                    nextDialog.SetActive(true);
+                else
+                    lastDialog.SetActive(true);
             });
 
         }
@@ -89,4 +87,5 @@ public class DialogRightOfWaySpeechHandler : MonoBehaviour, ISpeechHandler
         yield return new WaitForSeconds(time);
         callback();
     }
+
 }
