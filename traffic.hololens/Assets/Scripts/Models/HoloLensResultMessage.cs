@@ -28,6 +28,8 @@ public class HoloLensResultMessage
 
     public HoloLensTraffic CallDecided;
 
+    public int NumberOfAttempts;
+
     public override string ToString()
     {
         Debug.Log("SzenarioName " + SzenarioName + " Collide " + Collide + " RightOfWay " + RightOfWay + " Turn " + Turn + " CompassTurn " + CompassTurn);

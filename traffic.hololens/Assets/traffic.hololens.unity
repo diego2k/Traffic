@@ -249,11 +249,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 104354477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 261818589eac42c41a12617141f19c1e, type: 3}
+  m_Script: {fileID: 11500000, guid: ca9c57f73bf852c48868d5bac37ac43f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nextDialog: {fileID: 1008757170}
-  points: {fileID: 1895342072}
 --- !u!4 &104354479
 Transform:
   m_ObjectHideFlags: 0
@@ -633,10 +632,10 @@ GameObject:
   m_Component:
   - component: {fileID: 177050828}
   - component: {fileID: 177050831}
-  - component: {fileID: 177050830}
   - component: {fileID: 177050829}
   - component: {fileID: 177050832}
   - component: {fileID: 177050833}
+  - component: {fileID: 177050830}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -692,8 +691,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &177050830
-SphereCollider:
+--- !u!65 &177050830
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -702,7 +701,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 8
+  m_Size: {x: 18, y: 12, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &177050831
 MeshFilter:
@@ -2336,9 +2335,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4939e1e4a495014fb57ec53e95f8f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attempts: 0
   centerHUD: {fileID: 746485214}
   nextDialog: {fileID: 104354477}
   animationObject: {fileID: 177050827}
+  points: {fileID: 1895342072}
+  hitPlane: {fileID: 1280774524}
 --- !u!1 &492603635
 GameObject:
   m_ObjectHideFlags: 0
@@ -3981,7 +3983,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &938484563
 Transform:
   m_ObjectHideFlags: 0
@@ -5287,7 +5289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.72080445, g: 0.9705882, b: 0.79487824, a: 0.392}
+  m_Color: {r: 0.54901963, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -7815,7 +7817,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 16, y: -95}
-  m_SizeDelta: {x: 100, y: 50}
+  m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1930457781
 GameObject:
