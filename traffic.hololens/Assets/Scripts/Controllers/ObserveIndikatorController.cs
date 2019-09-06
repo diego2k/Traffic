@@ -9,6 +9,7 @@ public class ObserveIndikatorController : MonoBehaviour
     private const int MAX_ATTEMPT = 10;
     private static bool _firstTime = true;
     private int _count = 0, _time = 0, _timeHit = 0;
+    private float _hitsLastAttempt = 0.0f;
     public int _attempts = 0;
     private Animator _animator;
     private GestureRecognizer recognizer;
@@ -88,7 +89,11 @@ public class ObserveIndikatorController : MonoBehaviour
     {
         Debug.Log("AnimationDone!");
         float hits = (float)_timeHit / (float)_time;
-        points.text = string.Format("{0:0.00}%", hits * 100);
+        if (_firstTime)
+            points.text = string.Format("{0:0.00}%", hits * 100);
+        else
+            points.text = string.Format("{0:0.00}% (Last attempt {1:0.00}%)", hits * 100, _hitsLastAttempt * 100);
+        _hitsLastAttempt = hits;
 
         if (++_attempts < MAX_ATTEMPT)
         {
