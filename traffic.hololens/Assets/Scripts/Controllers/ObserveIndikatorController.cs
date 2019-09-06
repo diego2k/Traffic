@@ -9,7 +9,6 @@ public class ObserveIndikatorController : MonoBehaviour
     private const int MAX_ATTEMPT = 10;
     private static bool _firstTime = true;
     private int _count = 0, _time = 0, _timeHit = 0;
-    private bool _isTimeRunning = false;
     public int _attempts = 0;
     private Animator _animator;
     private GestureRecognizer recognizer;
@@ -44,10 +43,9 @@ public class ObserveIndikatorController : MonoBehaviour
     private void OnEnable()
     {
         Debug.Log("Start!");
-        _isTimeRunning = false;
         _time = _timeHit = _attempts = _count = 0;
         FocusedObject = null;
-        centerHUD.text = "Follow the ball!";
+        centerHUD.text = "Catch and chase the ball!";
         TcpListner.ResetListner();
     }
 
@@ -91,27 +89,21 @@ public class ObserveIndikatorController : MonoBehaviour
         Debug.Log("AnimationDone!");
         float hits = (float)_timeHit / (float)_time;
         points.text = string.Format("{0:0.00}%", hits * 100);
-        bool continueAnimation = false;
 
         if (++_attempts < MAX_ATTEMPT)
         {
             if (_firstTime)
             {
                 if (++_count < MIN_ATTEMPT_FIRST)
-                    continueAnimation = true;
+                    return;
             }
             else
             {
                 if (++_count < MIN_ATTEMPT)
-                    continueAnimation = true;
+                    return;
             }
             if (hits < 0.2f)
-                continueAnimation = true;
-        }
-        if (continueAnimation)
-        {
-            //_animator.SetBool("AnimateSphere", true);
-            return;
+                return;
         }
         _firstTime = false;
 
