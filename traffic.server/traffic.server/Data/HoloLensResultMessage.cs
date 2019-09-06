@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace traffic.server.Data
+﻿namespace traffic.server.Data
 {
     public class HoloLensResultMessage
     {
@@ -32,5 +26,7 @@ namespace traffic.server.Data
         public long CallDecidedTicks { get; set; }
 
         public HoloLensTraffic CallDecided { get; set; }
+
+        public int NumberOfAttempts { get; set; }
     }
 }
