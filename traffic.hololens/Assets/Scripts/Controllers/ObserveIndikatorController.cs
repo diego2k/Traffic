@@ -81,8 +81,11 @@ public class ObserveIndikatorController : MonoBehaviour
                 _animator.SetBool("AnimateSphere", true);
         }
 
-        float hits = (float)_timeHit / (float)_time;
-        centerHUD.text = string.Format("Pattern matched: {0:0.00}%", hits * 100);
+        if (_timeHit > 0)
+        {
+            float hits = (float)_timeHit / (float)_time;
+            centerHUD.text = string.Format("Pattern matched: {0:0.00}%", hits * 100);
+        }
     }
 
     public void AnimationDone()

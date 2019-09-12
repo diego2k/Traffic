@@ -8,6 +8,8 @@ public class ObserverResultScreenController : MonoBehaviour
 
     public GameObject nextDialog;
 
+    public Text centerHUD;
+
     void Start()
     {
     }
@@ -15,6 +17,7 @@ public class ObserverResultScreenController : MonoBehaviour
     private void OnEnable()
     {
         _startTime = DateTime.Now;
+        centerHUD.text = "";
         Debug.Log("Result screen Start " + TcpListner.Points.ToString());
     }
 
