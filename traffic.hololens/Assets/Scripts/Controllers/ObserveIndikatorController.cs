@@ -4,9 +4,10 @@ using UnityEngine.XR.WSA.Input;
 
 public class ObserveIndikatorController : MonoBehaviour
 {
-    private const int MIN_ATTEMPT_FIRST = 1;
+    private const int MIN_ATTEMPT_FIRST = 3;
     private const int MIN_ATTEMPT = 1;
     private const int MAX_ATTEMPT = 10;
+    private const float MIN_SUCCESS = 0.7f;
     private static bool _firstTime = true;
     private int _count = 0, _time = 0, _timeHit = 0;
     private float _hitsLastAttempt = 0.0f;
@@ -110,7 +111,7 @@ public class ObserveIndikatorController : MonoBehaviour
                 if (++_count < MIN_ATTEMPT)
                     return;
             }
-            if (hits < 0.2f)
+            if (hits < MIN_SUCCESS)
                 return;
         }
         _firstTime = false;
