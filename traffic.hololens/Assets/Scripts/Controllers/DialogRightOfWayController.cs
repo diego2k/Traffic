@@ -26,19 +26,19 @@ public class DialogRightOfWayController : MonoBehaviour, ISpeechHandler
         int answer = 0;
         switch (command)
         {
-            case "a":
+            case "alpha":
                 {
                     answer = 1;
                     _activeButton = button1;
                 }
                 break;
-            case "b":
+            case "bravo":
                 {
                     answer = 2;
                     _activeButton = button2;
                 }
                 break;
-            case "c":
+            case "charlie":
                 {
                     answer = 2;
                     _activeButton = button3;

@@ -476,7 +476,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -3, y: 78}
-  m_SizeDelta: {x: 250, y: 40}
+  m_SizeDelta: {x: 290, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118726229
 MonoBehaviour:
@@ -956,7 +956,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -2, y: 27}
-  m_SizeDelta: {x: 250, y: 40}
+  m_SizeDelta: {x: 290, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &227359450
 GameObject:
@@ -3566,11 +3566,11 @@ MonoBehaviour:
   PersistentKeywords: 0
   RecognizerStart: 0
   Keywords:
-  - Keyword: A
+  - Keyword: Alpha
     KeyCode: 0
-  - Keyword: B
+  - Keyword: Bravo
     KeyCode: 0
-  - Keyword: C
+  - Keyword: Charlie
     KeyCode: 0
   - Keyword: Yes
     KeyCode: 0
@@ -4756,7 +4756,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Say: ''C'' - Nobody has the right of way'
+  m_Text: 'Say: ''Charlie'' - Nobody has the right of way'
 --- !u!222 &1049351055
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6570,7 +6570,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -2.0003111, y: -23}
-  m_SizeDelta: {x: 250, y: 40}
+  m_SizeDelta: {x: 290, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1542459000
 MonoBehaviour:
@@ -7550,7 +7550,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Say: ''A'' - Traffic has the right of way'
+  m_Text: 'Say: ''Alpha'' - Traffic has the right of way'
 --- !u!222 &1734620803
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7843,7 +7843,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Say: ''B'' - I have the right of way'
+  m_Text: 'Say: ''Bravo'' - I have the right of way'
 --- !u!222 &1839355669
 CanvasRenderer:
   m_ObjectHideFlags: 0
