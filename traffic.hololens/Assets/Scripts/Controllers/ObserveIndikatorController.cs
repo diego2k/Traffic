@@ -117,6 +117,7 @@ public class ObserveIndikatorController : MonoBehaviour
         _firstTime = false;
 
         TcpListner.Results.NumberOfAttempts = _attempts;
+        TcpListner.Results.ScanningPatternResult = hits;
 #if WINDOWS_UWP
         TcpListner.SendReadyForTraffic();
 #endif

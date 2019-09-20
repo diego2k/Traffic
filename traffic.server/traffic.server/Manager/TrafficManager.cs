@@ -106,12 +106,12 @@ namespace traffic.server.Manager
                 {
                     using (StreamWriter sw = File.CreateText(PATH))
                     {
-                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallTrafficTime\tCallDecidedTime\tAttempts");
+                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallTrafficTime\tCallDecidedTime\tAttempts\tScanningPatternResult");
                     }
                 }
                 using (StreamWriter sw = File.AppendText(PATH))
                 {
-                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.Turn}\t{result.CompassTurn}\t{result.TrafficStartTicks}\t{result.CallTrafficTicks}\t{result.CallDecidedTicks}\t{result.NumberOfAttempts}");
+                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.Turn}\t{result.CompassTurn}\t{result.TrafficStartTicks}\t{result.CallTrafficTicks}\t{result.CallDecidedTicks}\t{result.NumberOfAttempts}\t{result.ScanningPatternResult}");
                 }
             }
         }

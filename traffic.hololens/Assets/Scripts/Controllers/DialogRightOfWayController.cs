@@ -46,7 +46,6 @@ public class DialogRightOfWayController : MonoBehaviour, ISpeechHandler
                 break;
             default:
                 return;
-
         }
 
         // Check Answer

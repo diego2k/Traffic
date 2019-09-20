@@ -28,5 +28,7 @@
         public HoloLensTraffic CallDecided { get; set; }
 
         public int NumberOfAttempts { get; set; }
+
+        public float ScanningPatternResult { get; set; }
     }
 }
