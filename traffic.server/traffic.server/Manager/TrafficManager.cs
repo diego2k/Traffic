@@ -126,6 +126,16 @@ namespace traffic.server.Manager
             _tcpListner.Send(JsonConvert.SerializeObject(env));
         }
 
+        internal void SendSpeechCommand(NetworkSpeechCommand speechCommand)
+        {
+            var env = new Envelope()
+            {
+                Content = JsonConvert.SerializeObject(speechCommand),
+                Type = typeof(NetworkSpeechCommand).Name
+            };
+            _tcpListner.Send(JsonConvert.SerializeObject(env));
+        }
+
         private void SimulationTraffic(object sender, UdpDataReceivedEventArgs e)
         {
             var listner = sender as AsynchronousUPDListner;

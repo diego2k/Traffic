@@ -58,6 +58,8 @@ namespace traffic.server.ViewModel
 
         public RelayCommand SendScenarioCommand { get; set; }
 
+        public RelayCommand<string> SendNetworkSpeechCommand { get; set; }
+
         public MainViewModel()
         {
             try
@@ -78,6 +80,7 @@ namespace traffic.server.ViewModel
 
             for (int i = 0; i < StatusColor.Length; i++) { StatusColor[i] = new SolidColorBrush(Colors.Red); }
             SendScenarioCommand = new RelayCommand(SendScenario, CanSendScenario);
+            SendNetworkSpeechCommand = new RelayCommand<string>(SendNetworkSpeech);
 
             Messenger.Default.Register<PortStatusMessage>(this, PortStatus);
             Messenger.Default.Register<InternalHoloLensStatusMessage>(this, HoloLensStatus);
@@ -94,6 +97,11 @@ namespace traffic.server.ViewModel
         {
             _trafficManager.SendScenario(SelectedScenario);
             SelectedScenario = null;
+        }
+
+        private void SendNetworkSpeech(string cmd)
+        {
+            _trafficManager.SendSpeechCommand(new NetworkSpeechCommand() { Text = cmd });
         }
 
         private void PortStatus(PortStatusMessage data)

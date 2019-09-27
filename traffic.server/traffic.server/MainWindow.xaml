@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <GroupBox Grid.Column="0" Grid.Row="0" Header="Status Simulation" VerticalAlignment="Top">
@@ -204,18 +205,59 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Grid.Column="1" Grid.Row="0" Header="Experimental Data" VerticalAlignment="Top">
-            <StackPanel>
-                <DataGrid ItemsSource="{Binding ScenarioData}" 
+        <StackPanel Grid.Column="1" Grid.Row="0" >
+            <GroupBox Header="Experimental Data" VerticalAlignment="Top">
+                <StackPanel>
+                    <DataGrid ItemsSource="{Binding ScenarioData}" 
                           CanUserAddRows="False" 
                           CanUserDeleteRows="False"
                           SelectionMode="Single" 
                           IsReadOnly="True"
                           SelectedItem="{Binding SelectedScenario}"/>
 
-                <Button Margin="10" Content="Start Selected Scenario" 
+                    <Button Margin="10" Content="Start Selected Scenario" 
                         Command="{Binding SendScenarioCommand}"></Button>
-            </StackPanel>
-        </GroupBox>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Send Speech Commands" VerticalAlignment="Top">
+                <StackPanel>
+                    <Button Margin="5" Content="Start" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="start"/>
+                    
+                    <Button Margin="5" Content="Traffic" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="traffic"/>
+                    <Button Margin="5" Content="Decided" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="decided"/>
+                    
+                    <Button Margin="5" Content="Yes" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="yes"/>
+                    <Button Margin="5" Content="No" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="no"/>
+
+                    <Button Margin="5" Content="Alpha" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="alpha"/>
+                    <Button Margin="5" Content="Bravo" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="bravo"/>
+                    <Button Margin="5" Content="Charlie" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="charlie"/>
+
+                    <Button Margin="5" Content="Left" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="left"/>
+                    <Button Margin="5" Content="Right" 
+                        Command="{Binding SendNetworkSpeechCommand}"
+                        CommandParameter="right"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
     </Grid>
 </Window>

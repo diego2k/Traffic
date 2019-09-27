@@ -45,6 +45,30 @@ public class TcpListner : MonoBehaviour
         IsScenarioDataValid = false;
     }
 
+    private void SendNetworkSpeechCommand(NetworkSpeechCommand command)
+    {
+        try
+        {
+            UnityEngine.WSA.Application.InvokeOnAppThread(() =>
+            {
+                HoloToolkit.Unity.InputModule.SpeechInputSource src = new HoloToolkit.Unity.InputModule.SpeechInputSource();
+                HoloToolkit.Unity.InputModule.InputManager.Instance.RaiseSpeechKeywordPhraseRecognized(
+                    src,
+                    999,
+                    UnityEngine.Windows.Speech.ConfidenceLevel.High,
+                    TimeSpan.MinValue,
+                    DateTime.Now,
+                    new UnityEngine.Windows.Speech.SemanticMeaning[0],
+                    command.Text);
+                Debug.Log("SendNetworkSpeechCommand worked!");
+            }, false);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
+    }
+
 #if WINDOWS_UWP
     public static StreamSocket socket;
 
@@ -108,10 +132,16 @@ public class TcpListner : MonoBehaviour
                         else if (env.type == typeof(ScenarioData).Name)
                         {
                             ScenarioData = JsonUtility.FromJson<ScenarioData>(env.content);
-    Debug.Log(env.content+ " " + ScenarioData.CompassTurn);
+                            Debug.Log(env.content+ " " + ScenarioData.CompassTurn);
 
                             IsScenarioDataValid = true;
                             Results.SzenarioName = ScenarioData.Name;
+                        }
+                        else if (env.type == typeof(NetworkSpeechCommand).Name)
+                        {
+                            Debug.Log(env.content);
+                            var netcmd = JsonUtility.FromJson<NetworkSpeechCommand>(env.content);
+                            SendNetworkSpeechCommand(netcmd);
                         }
                     }
                     catch (Exception e)
