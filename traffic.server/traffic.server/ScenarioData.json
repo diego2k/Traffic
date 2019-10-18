@@ -4,15 +4,33 @@
     "Collide": true,
     "RightOfWay": 1,
     "Turn": "R",
-    "CompassCurrent": 100,
-    "CompassTarget": "zero two zero",
+    "CompassCurrent": 50,
+    "CompassTarget": "zero zero zero",
     "CompassTurn": "L"
   },
   {
     "Name": "Szenario B",
     "Collide": false,
-    "CompassCurrent": 50,
-    "CompassTarget": "one two zero",
+    "CompassCurrent": 100,
+    "CompassTarget": "one five one",
+    "CompassTurn": "L"
+  },
+  {
+    "Name": "Szenario C",
+    "Collide": true,
+    "RightOfWay": 2,
+    "Turn": "L",
+    "CompassCurrent": 150,
+    "CompassTarget": "two zero zero",
     "CompassTurn": "R"
+  },
+  {
+    "Name": "Szenario D",
+    "Collide": true,
+    "RightOfWay": 3,
+    "Turn": "R",
+    "CompassCurrent": 200,
+    "CompassTarget": "one five zero",
+    "CompassTurn": "L"
   }
 ]

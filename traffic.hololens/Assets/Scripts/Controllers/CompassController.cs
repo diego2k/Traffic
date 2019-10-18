@@ -38,6 +38,9 @@ public class CompassController : MonoBehaviour, ISpeechHandler
         t_2.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent + 20);
         t_3.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent + 30);
         t_4.text = CompassPosition(TcpListner.ScenarioData.CompassCurrent + 40);
+
+        _textToSpeech = GetComponent<TextToSpeech>();
+        _textToSpeech.StartSpeaking(string.Format("Turn to heading {0}.", TcpListner.ScenarioData.CompassTarget));
     }
 
     private string CompassPosition(int degree)
@@ -52,14 +55,6 @@ public class CompassController : MonoBehaviour, ISpeechHandler
         }
         else
             return degree.ToString();
-    }
-
-    private void Awake()
-    {
-        _textToSpeech = GetComponent<TextToSpeech>();
-        if (!TcpListner.IsScenarioDataValid) return;
-
-        _textToSpeech.StartSpeaking(string.Format("Turn to heading {0}.", TcpListner.ScenarioData.CompassTarget));
     }
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)

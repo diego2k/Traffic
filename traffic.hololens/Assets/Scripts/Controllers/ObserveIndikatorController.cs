@@ -4,7 +4,7 @@ using UnityEngine.XR.WSA.Input;
 
 public class ObserveIndikatorController : MonoBehaviour
 {
-    private const int MIN_ATTEMPT_FIRST = 3;
+    private const int MIN_ATTEMPT_FIRST = 3; // 3
     private const int MIN_ATTEMPT = 1;
     private const int MAX_ATTEMPT = 10;
     private const float MIN_SUCCESS = 0.7f;
@@ -49,6 +49,7 @@ public class ObserveIndikatorController : MonoBehaviour
         FocusedObject = null;
         centerHUD.text = "Catch and chase the ball!";
         TcpListner.ResetListner();
+        //AnimationDone(); // Remove this line
     }
 
     void Update()
