@@ -155,6 +155,7 @@ namespace traffic.server.Net
                     // Begin sending the data to the remote device.  
                     handler.BeginSend(byteData, 0, byteData.Length, 0,
                         new AsyncCallback(SendCallback), handler);
+                    Console.WriteLine(data);
                 }
             }
         }

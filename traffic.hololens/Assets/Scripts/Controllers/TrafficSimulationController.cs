@@ -20,19 +20,12 @@ public class TrafficSimulationController : MonoBehaviour, ISpeechHandler
     private void OnEnable()
     {
         _enableSpeechinput = true;
-        centerHUD.text = "Watch out for traffic! Say 'traffic'";
+        centerHUD.text = "Decide now! Press the button!";
     }
 
     public void SpeechCommands(string command)
     {
-        if (command == "traffic")
-        {
-            Debug.Log("User has decided.");
-            centerHUD.text = "Decide now! Say 'decided'";
-            TcpListner.Results.CallTrafficTicks = DateTime.Now.Ticks;
-            TcpListner.Results.CallTraffic = TcpListner.TrafficData;
-        }
-        else if (command == "decided")
+        if (command == "decided")
         {
             Debug.Log("User has seen traffic.");
             centerHUD.text = string.Empty;

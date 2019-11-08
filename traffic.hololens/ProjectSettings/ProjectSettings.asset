@@ -543,7 +543,7 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   platformArchitecture: {}
   scriptingBackend:
-    Metro: 1
+    Metro: 2
   incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 0
@@ -559,7 +559,7 @@ PlayerSettings:
   metroCertificateNotAfter: 00740a853247d601
   metroApplicationDescription: traffic.hololens
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: traffic.hololens
   metroCommandLineArgsFile: 
   metroTileShowName: 0
   metroMediumTileShowName: 0
