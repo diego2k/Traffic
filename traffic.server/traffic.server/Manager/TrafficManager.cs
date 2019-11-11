@@ -85,6 +85,24 @@ namespace traffic.server.Manager
                 }
             });
             th.Start();
+            Thread.Sleep(100);
+
+            Thread th2 = new Thread(() =>
+            {
+                int port = 5208;
+                try
+                {
+                    var l = new AsynchronousUPDListner();
+                    l.UdpDataReceived += AircraftControls;
+                    _traffic.Add(l);
+                    l.Start(port, 104);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            });
+            th2.Start();
         }
 
         private void HoloLensData(object sender, TcpDataReceivedEventArgs e)
@@ -106,12 +124,12 @@ namespace traffic.server.Manager
                 {
                     using (StreamWriter sw = File.CreateText(PATH))
                     {
-                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallTrafficTime\tCallDecidedTime\tAttempts\tScanningPatternResult");
+                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallDecidedTime\tAttempts\tScanningPatternResult");
                     }
                 }
                 using (StreamWriter sw = File.AppendText(PATH))
                 {
-                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.Turn}\t{result.CompassTurn}\t{result.TrafficStartTicks}\t{result.CallTrafficTicks}\t{result.CallDecidedTicks}\t{result.NumberOfAttempts}\t{result.ScanningPatternResult}");
+                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.Turn}\t{result.CompassTurn}\t{result.TrafficStartTicks}\t{result.CallDecidedTicks}\t{result.NumberOfAttempts}\t{result.ScanningPatternResult}");
                 }
             }
         }
@@ -178,6 +196,20 @@ namespace traffic.server.Manager
                 Type = typeof(HoloLensTraffic).Name
             };
             _tcpListner.Send(JsonConvert.SerializeObject(env));
+        }
+
+        private void AircraftControls(object sender, UdpDataReceivedEventArgs e)
+        {
+            AircraftControlsData controlData = new AircraftControlsData(e.Data);
+            if (controlData.APDisengageButton)
+            {
+                var env = new Envelope()
+                {
+                    Content = JsonConvert.SerializeObject("decided"),
+                    Type = typeof(NetworkSpeechCommand).Name
+                };
+                _tcpListner.Send(JsonConvert.SerializeObject(env));
+            }
         }
 
         private (float x, float y, float z, float rotationX, float rotationY, float rotationZ) CalculateTarget(TrafficData me, TrafficData traffic)

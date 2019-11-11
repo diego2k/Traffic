@@ -19,10 +19,6 @@
 
         public long TrafficStartTicks { get; set; }
 
-        public long CallTrafficTicks { get; set; }
-
-        public HoloLensTraffic CallTraffic { get; set; }
-
         public long CallDecidedTicks { get; set; }
 
         public HoloLensTraffic CallDecided { get; set; }

@@ -20,10 +20,6 @@ public class HoloLensResultMessage
 
     public long TrafficStartTicks;
 
-    public long CallTrafficTicks;
-
-    public HoloLensTraffic CallTraffic;
-
     public long CallDecidedTicks;
 
     public HoloLensTraffic CallDecided;

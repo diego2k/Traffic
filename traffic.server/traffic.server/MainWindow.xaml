@@ -226,9 +226,9 @@
                         Command="{Binding SendNetworkSpeechCommand}"
                         CommandParameter="start"/>
                     
-                    <Button Margin="5" Content="Traffic" 
+                    <!--Button Margin="5" Content="Traffic" 
                         Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="traffic"/>
+                        CommandParameter="traffic"/-->
                     <Button Margin="5" Content="Decided" 
                         Command="{Binding SendNetworkSpeechCommand}"
                         CommandParameter="decided"/>
