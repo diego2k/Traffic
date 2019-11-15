@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using traffic.server.Helper;
 
 namespace traffic.server.Data
 {
@@ -11,7 +6,6 @@ namespace traffic.server.Data
     {
         private const int HEADER_SIZE = 4;
 
-        public bool FDSynchronizeButton { get; set; }
         public bool APDisengageButton { get; set; }
 
         public AircraftControlsData(byte[] data)
@@ -20,10 +14,9 @@ namespace traffic.server.Data
 
             byte[] buttons = new byte[1];
 
-            Buffer.BlockCopy(data, 26, buttons, 0, 1);
+            Buffer.BlockCopy(data, 14, buttons, 0, 1);
 
-            FDSynchronizeButton = (buttons[0] & 64) > 1;
-            APDisengageButton = (buttons[0] & 128) > 1;
+            APDisengageButton = (buttons[0] & 2) >= 1;
         }
     }
 }

@@ -89,7 +89,7 @@ namespace traffic.server.Manager
 
             Thread th2 = new Thread(() =>
             {
-                int port = 5208;
+                int port = 5423;
                 try
                 {
                     var l = new AsynchronousUPDListner();
