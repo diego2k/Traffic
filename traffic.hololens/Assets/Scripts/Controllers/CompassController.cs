@@ -47,14 +47,14 @@ public class CompassController : MonoBehaviour, ISpeechHandler
     {
         if (degree > 360)
         {
-            return (degree - 360).ToString();
+            return (degree - 360).ToString().PadLeft(3, '0');
         }
         else if (degree < 0)
         {
-            return (360 + degree).ToString();
+            return (360 + degree).ToString().PadLeft(3, '0');
         }
         else
-            return degree.ToString();
+            return degree.ToString().PadLeft(3, '0');
     }
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)

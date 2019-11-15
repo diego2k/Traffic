@@ -203,12 +203,7 @@ namespace traffic.server.Manager
             AircraftControlsData controlData = new AircraftControlsData(e.Data);
             if (controlData.APDisengageButton)
             {
-                var env = new Envelope()
-                {
-                    Content = JsonConvert.SerializeObject("decided"),
-                    Type = typeof(NetworkSpeechCommand).Name
-                };
-                _tcpListner.Send(JsonConvert.SerializeObject(env));
+                SendSpeechCommand(new NetworkSpeechCommand() { Text = "decided" });
             }
         }
 
