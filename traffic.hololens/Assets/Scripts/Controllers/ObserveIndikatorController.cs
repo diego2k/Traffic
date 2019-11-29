@@ -75,7 +75,9 @@ public class ObserveIndikatorController : MonoBehaviour
 
         if (!TcpListner.IsScenarioDataValid) return;
 
-        _time++;
+        if (_animator.GetBool("AnimateSphere"))
+            _time++;
+
         if (FocusedObject != null)
         {
             _timeHit++;
@@ -85,8 +87,8 @@ public class ObserveIndikatorController : MonoBehaviour
 
         if (_timeHit > 0)
         {
-            float hits = (float)_timeHit / (float)_time;
-            centerHUD.text = string.Format("Pattern matched: {0:0.00}%", hits * 100);
+            float hits = ((float)_timeHit / (float)_time) * 100;
+            centerHUD.text = string.Format("Pattern matched: {0:0.00}%", hits > 100.0f ? 100.0f : hits);
         }
     }
 
