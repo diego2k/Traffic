@@ -22,7 +22,7 @@ public class TrafficSimulationController : MonoBehaviour, ISpeechHandler
     {
         _enableSpeechinput = true;
         centerHUD.text = "Decide now! Press the button!";
-
+        TcpListner.IsTrafficDataValid = false;
         _textToSpeech = GetComponent<TextToSpeech>();
         _textToSpeech.StartSpeaking(TcpListner.ScenarioData.Announcement);
     }

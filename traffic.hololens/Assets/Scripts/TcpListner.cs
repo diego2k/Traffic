@@ -23,7 +23,7 @@ public class TcpListner : MonoBehaviour
     public int ConnectionPort = 11000;
 
     public static HoloLensTraffic TrafficData { get; private set; }
-    public static bool IsTrafficDataValid { get; private set; }
+    public static bool IsTrafficDataValid { get; set; }
     public static ScenarioData ScenarioData { get; private set; }
     public static bool IsScenarioDataValid { get; private set; }
 
@@ -36,7 +36,8 @@ public class TcpListner : MonoBehaviour
             return (Results.Collide == ScenarioData.Collide ? 1 : 0) +
             (ScenarioData.RightOfWay > 0 && Results.RightOfWay == ScenarioData.RightOfWay ? 1 : 0) +
             (Results.Turn == ScenarioData.Turn ? 1 : 0) +
-            (Results.CompassTurn == ScenarioData.CompassTurn ? 1 : 0);
+            (Results.CompassTurn == ScenarioData.CompassTurn ? 1 : 0) +
+            (int)(Results.ScanningPatternResult * 100);
         }
     }
 
