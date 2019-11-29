@@ -22,6 +22,8 @@ public class ScenarioData
 
     public string CompassTurn;
 
+    public string Announcement;
+
     public override string ToString()
     {
         Debug.Log("Name " + Name + " Collide " + Collide + " RightOfWay " + RightOfWay + " Turn " + Turn + " CompassTurn " + CompassTurn);

@@ -20,5 +20,7 @@
         public string CompassTarget { get; set; }
 
         public string CompassTurn { get; set; }
+
+        public string Announcement { get; set; }
     }
 }

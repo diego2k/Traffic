@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Threading;
 #if WINDOWS_UWP
 using Windows.Networking.Connectivity;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Windows.Networking;
 using Windows.Foundation;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
+using Newtonsoft.Json;
 #endif
 
 /// <summary>
@@ -105,20 +107,13 @@ public class TcpListner : MonoBehaviour
 
                 while (true)
                 {
-                    IAsyncOperation<uint> taskLoad = reader.LoadAsync(900);
-                    //taskLoad.AsTask().Wait();
-                    await taskLoad.AsTask().ConfigureAwait(false);
-                    var bytesRead = taskLoad.GetResults();
-                    if (bytesRead != 900)
-                    {
-                        var x = 0;
-                    }
+                    var bytesRead = await reader.LoadAsync(900);
                     string cleanedString = reader.ReadString(bytesRead);
 
                     try
                     {
                         //Debug.Log(cleanedString);
-                        Envelope env = JsonUtility.FromJson<Envelope>(cleanedString);
+                        Envelope env = JsonConvert.DeserializeObject<Envelope>(cleanedString);
                         if (env.type == typeof(HoloLensTraffic).Name)
                         {
                             if (!IsTrafficDataValid)
@@ -126,12 +121,12 @@ public class TcpListner : MonoBehaviour
                                 Results.TrafficStartTicks = DateTime.Now.Ticks;
                             }
 
-                            TrafficData = JsonUtility.FromJson<HoloLensTraffic>(env.content);
+                            TrafficData = JsonConvert.DeserializeObject<HoloLensTraffic>(env.content);
                             IsTrafficDataValid = true;
                         }
                         else if (env.type == typeof(ScenarioData).Name)
                         {
-                            ScenarioData = JsonUtility.FromJson<ScenarioData>(env.content);
+                            ScenarioData = JsonConvert.DeserializeObject<ScenarioData>(env.content);
                             Debug.Log(env.content+ " " + ScenarioData.CompassTurn);
 
                             IsScenarioDataValid = true;
@@ -140,7 +135,7 @@ public class TcpListner : MonoBehaviour
                         else if (env.type == typeof(NetworkSpeechCommand).Name)
                         {
                             Debug.Log(env.content);
-                            var netcmd = JsonUtility.FromJson<NetworkSpeechCommand>(env.content);
+                            var netcmd = JsonConvert.DeserializeObject<NetworkSpeechCommand>(env.content);
                             SendNetworkSpeechCommand(netcmd);
                         }
                     }
@@ -182,23 +177,23 @@ public class TcpListner : MonoBehaviour
     {
         Envelope env = new Envelope()
         {
-            content = JsonUtility.ToJson(new HoloLensStatusMessage()
+            content = JsonConvert.SerializeObject(new HoloLensStatusMessage()
             {
                 readyForTraffic = true,
             }),
             type = typeof(HoloLensStatusMessage).Name
         };
-        await SendDataToCLient(JsonUtility.ToJson(env));
+        await SendDataToCLient(JsonConvert.SerializeObject(env));
     }
 
     public static async Task SendResults()
     {
         Envelope env = new Envelope()
         {
-            content = JsonUtility.ToJson(Results),
+            content = JsonConvert.SerializeObject(Results),
             type = typeof(HoloLensResultMessage).Name
         };
-        await SendDataToCLient(JsonUtility.ToJson(env));
+        await SendDataToCLient(JsonConvert.SerializeObject(env));
     }
 
 #endif

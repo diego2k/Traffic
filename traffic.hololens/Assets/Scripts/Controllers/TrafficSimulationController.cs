@@ -2,12 +2,13 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using HoloToolkit.Unity;
 
 public class TrafficSimulationController : MonoBehaviour, ISpeechHandler
 {
     public GameObject nextDialog;
     public Text centerHUD;
+    private TextToSpeech _textToSpeech;
     private bool _enableSpeechinput = false;
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
@@ -21,6 +22,9 @@ public class TrafficSimulationController : MonoBehaviour, ISpeechHandler
     {
         _enableSpeechinput = true;
         centerHUD.text = "Decide now! Press the button!";
+
+        _textToSpeech = GetComponent<TextToSpeech>();
+        _textToSpeech.StartSpeaking(TcpListner.ScenarioData.Announcement);
     }
 
     public void SpeechCommands(string command)

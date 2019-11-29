@@ -6,14 +6,16 @@
     "Turn": "R",
     "CompassCurrent": 50,
     "CompassTarget": "zero zero zero",
-    "CompassTurn": "L"
+    "CompassTurn": "L",
+    "Announcement": "Airplane from 10 o'clock."
   },
   {
     "Name": "Szenario B",
     "Collide": false,
     "CompassCurrent": 100,
     "CompassTarget": "one five one",
-    "CompassTurn": "L"
+    "CompassTurn": "L",
+    "Announcement": "Airplane from 10 o'clock."
   },
   {
     "Name": "Szenario C",
@@ -22,7 +24,8 @@
     "Turn": "L",
     "CompassCurrent": 150,
     "CompassTarget": "two zero zero",
-    "CompassTurn": "R"
+    "CompassTurn": "R",
+    "Announcement": "Airplane from 10 o'clock."
   },
   {
     "Name": "Szenario D",
@@ -31,6 +34,7 @@
     "Turn": "R",
     "CompassCurrent": 200,
     "CompassTarget": "one five zero",
-    "CompassTurn": "L"
+    "CompassTurn": "L",
+    "Announcement": "Airplane from 10 o'clock."
   }
 ]
