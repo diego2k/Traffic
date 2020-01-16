@@ -265,7 +265,7 @@ namespace traffic.server.Manager
 
             var I_bb = I_bg_x_I_ge * I_eb;
 
-            float rotY = - RadianToDegree(Math.Atan2(I_bb[1, 0], I_bb[0, 0]));
+            float rotY = RadianToDegree(Math.Atan2(I_bb[1, 0], I_bb[0, 0]));
             float rotX = RadianToDegree(Math.Atan2(I_bb[2, 1], I_bb[2, 2]));
             float rotZ = RadianToDegree(Math.Asin(-I_bb[2, 0]));
 
