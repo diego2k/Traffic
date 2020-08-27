@@ -4885,7 +4885,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Say: ''Right'''
+  m_Text: 'Say: ''Turn right'''
 --- !u!222 &998224343
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7722,7 +7722,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Say: ''Left'''
+  m_Text: 'Say: ''Turn left'''
 --- !u!222 &1641361219
 CanvasRenderer:
   m_ObjectHideFlags: 0

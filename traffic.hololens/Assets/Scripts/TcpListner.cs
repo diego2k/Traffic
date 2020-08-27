@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 using System;
-using System.Threading;
 #if WINDOWS_UWP
-using Windows.Networking.Connectivity;
 using System.Threading.Tasks;
 using Windows.Networking;
-using Windows.Foundation;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using Newtonsoft.Json;
@@ -52,6 +49,14 @@ public class TcpListner : MonoBehaviour
     {
         try
         {
+            if(command.Text == "quit")
+            {
+#if WINDOWS_UWP
+                SendResults().Wait();
+                Windows.ApplicationModel.Core.CoreApplication.Exit();
+#endif
+            }
+
             UnityEngine.WSA.Application.InvokeOnAppThread(() =>
             {
                 HoloToolkit.Unity.InputModule.SpeechInputSource src = new HoloToolkit.Unity.InputModule.SpeechInputSource();

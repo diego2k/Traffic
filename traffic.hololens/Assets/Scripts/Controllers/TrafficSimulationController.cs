@@ -21,7 +21,7 @@ public class TrafficSimulationController : MonoBehaviour, ISpeechHandler
     private void OnEnable()
     {
         _enableSpeechinput = true;
-        centerHUD.text = "Decide now! Press the button!";
+        centerHUD.text = "Watchout for traffic!";
         TcpListner.IsTrafficDataValid = false;
         _textToSpeech = GetComponent<TextToSpeech>();
         _textToSpeech.StartSpeaking(TcpListner.ScenarioData.Announcement);
@@ -54,6 +54,8 @@ public class TrafficSimulationController : MonoBehaviour, ISpeechHandler
                 TcpListner.TrafficData.RotationX,
                 TcpListner.TrafficData.RotationY,
                 TcpListner.TrafficData.RotationZ);
+
+            centerHUD.text = "Decide now! Press the button!";
         }
         else
         {

@@ -26,5 +26,7 @@
         public int NumberOfAttempts { get; set; }
 
         public float ScanningPatternResult { get; set; }
-    }
+
+        public string ScanningPatternIndividualResult { get; set; }
+}
 }

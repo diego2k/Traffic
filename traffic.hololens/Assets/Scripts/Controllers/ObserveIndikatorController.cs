@@ -9,7 +9,7 @@ public class ObserveIndikatorController : MonoBehaviour
     private const int MAX_ATTEMPT = 10;
     private const float MIN_SUCCESS = 0.7f;
     private static bool _firstTime = true;
-    private int _count = 0, _time = 0, _timeHit = 0;
+    private int _count = 0, _time = 0, _timeHit = 0, _cTime = 0, _cTimeHit = 0;
     private float _hitsLastAttempt = 0.0f;
     public int _attempts = 0;
     private Animator _animator;
@@ -45,7 +45,7 @@ public class ObserveIndikatorController : MonoBehaviour
     private void OnEnable()
     {
         Debug.Log("Start!");
-        _time = _timeHit = _attempts = _count = 0;
+        _time = _timeHit = _attempts = _count = _cTime = _cTimeHit = 0;
         FocusedObject = null;
         centerHUD.text = "Catch and chase the ball!";
         TcpListner.ResetListner();
@@ -76,11 +76,15 @@ public class ObserveIndikatorController : MonoBehaviour
         if (!TcpListner.IsScenarioDataValid) return;
 
         if (_animator.GetBool("AnimateSphere"))
+        {
             _time++;
+            _cTime++;
+        }
 
         if (FocusedObject != null)
         {
             _timeHit++;
+            _cTimeHit++;
             if (!_animator.GetBool("AnimateSphere"))
                 _animator.SetBool("AnimateSphere", true);
         }
@@ -88,18 +92,21 @@ public class ObserveIndikatorController : MonoBehaviour
         if (_timeHit > 0)
         {
             float hits = ((float)_timeHit / (float)_time) * 100;
-            centerHUD.text = string.Format("Pattern matched: {0:0.00}%", hits > 100.0f ? 100.0f : hits);
+            centerHUD.text = string.Format("Pattern matched: {0:0}%", hits > 100.0f ? 100.0f : hits);
         }
     }
 
     public void AnimationDone()
     {
         Debug.Log("AnimationDone!");
+        TcpListner.Results.ScanningPatternIndividualResult += string.Format("{0:0.0000}\t", (float)_cTimeHit / (float)_cTime);
+        _cTime = _cTimeHit = 0;
+
         float hits = (float)_timeHit / (float)_time;
         if (_firstTime)
-            points.text = string.Format("{0:0.00}%", hits * 100);
+            points.text = string.Format("{0:0}%", hits * 100);
         else
-            points.text = string.Format("{0:0.00}% (Last attempt {1:0.00}%)", hits * 100, _hitsLastAttempt * 100);
+            points.text = string.Format("{0:0}% (Last attempt {1:0}%)", hits * 100, _hitsLastAttempt * 100);
         _hitsLastAttempt = hits;
 
         if (++_attempts < MAX_ATTEMPT)

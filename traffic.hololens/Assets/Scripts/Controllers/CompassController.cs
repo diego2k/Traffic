@@ -69,13 +69,13 @@ public class CompassController : MonoBehaviour, ISpeechHandler
         string answer = string.Empty;
         switch (command)
         {
-            case "left":
+            case "turn left":
                 {
                     answer = "L";
                     _activeButton = button1;
                 }
                 break;
-            case "right":
+            case "turn right":
                 {
                     answer = "R";
                     _activeButton = button2;

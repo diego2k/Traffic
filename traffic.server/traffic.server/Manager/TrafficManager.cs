@@ -113,7 +113,7 @@ namespace traffic.server.Manager
             {
                 var status = JsonConvert.DeserializeObject(env.Content, typeof(HoloLensStatusMessage)) as HoloLensStatusMessage;
                 if (status.readyForTraffic)
-                    MessageBox.Show("User is ready for traffic! Choose a scenario and click 'Send Selected Scenario', choose the same scenario in the Data Player and click Play.",
+                    MessageBox.Show("User is ready for traffic! Choose the scenario in the DataPlayer and click Play.",
                         "Ready", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else if (env.Type == typeof(HoloLensResultMessage).Name)
@@ -124,12 +124,12 @@ namespace traffic.server.Manager
                 {
                     using (StreamWriter sw = File.CreateText(PATH))
                     {
-                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallDecidedTime\tAttempts\tScanningPatternResult");
+                        sw.WriteLine("SzenarioName\tCollide\tRightOfWay\tTurnRight\tCompassTurnRight\tTrafficStartTime\tCallDecidedTime\tAttempts\tScanningPatternResult\tScanningPatternIndividualResult");
                     }
                 }
                 using (StreamWriter sw = File.AppendText(PATH))
                 {
-                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.Turn}\t{result.CompassTurn}\t{result.TrafficStartTicks}\t{result.CallDecidedTicks}\t{result.NumberOfAttempts}\t{result.ScanningPatternResult}");
+                    sw.WriteLine($"{result.SzenarioName}\t{result.Collide}\t{result.RightOfWay}\t{result.Turn}\t{result.CompassTurn}\t{result.TrafficStartTicks}\t{result.CallDecidedTicks}\t{result.NumberOfAttempts}\t{result.ScanningPatternResult}\t{result.ScanningPatternIndividualResult}");
                 }
             }
         }

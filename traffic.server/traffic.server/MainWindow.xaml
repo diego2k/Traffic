@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:traffic.server"
         mc:Ignorable="d"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
-        Title="Traffic Avoidance" Height="690" Width="1000">
+        Title="Traffic Avoidance" Height="830" Width="1000">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -223,39 +223,57 @@
             <GroupBox Header="Send Speech Commands" VerticalAlignment="Top">
                 <StackPanel>
                     <Button Margin="5" Content="Start" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="start"/>
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="start"/>
+                    <Separator Margin="5"/>
                     
                     <!--Button Margin="5" Content="Traffic" 
                         Command="{Binding SendNetworkSpeechCommand}"
                         CommandParameter="traffic"/-->
                     <Button Margin="5" Content="Decided" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="decided"/>
-                    
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="decided"/>
+                    <Separator Margin="5"/>
+
                     <Button Margin="5" Content="Yes" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="yes"/>
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="yes"/>
                     <Button Margin="5" Content="No" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="no"/>
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="no"/>
+                    <Separator Margin="5"/>
 
                     <Button Margin="5" Content="Alpha" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="alpha"/>
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="alpha"/>
                     <Button Margin="5" Content="Bravo" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="bravo"/>
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="bravo"/>
                     <Button Margin="5" Content="Charlie" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="charlie"/>
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="charlie"/>
+                    <Separator Margin="5"/>
 
                     <Button Margin="5" Content="Left" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="left"/>
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="left"/>
                     <Button Margin="5" Content="Right" 
-                        Command="{Binding SendNetworkSpeechCommand}"
-                        CommandParameter="right"/>
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="right"/>
+                    <Separator Margin="5"/>
+
+                    <Button Margin="5" Content="Turn left" 
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="turn left"/>
+                    <Button Margin="5" Content="Turn right" 
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="turn right"/>
+                    <Separator Margin="5"/>
+
+                    <Button Margin="5" Content="Quit" 
+                            Background="Red"
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="quit"/>
                 </StackPanel>
             </GroupBox>
         </StackPanel>
