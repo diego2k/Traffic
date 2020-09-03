@@ -87,22 +87,39 @@ namespace traffic.server.Manager
             th.Start();
             Thread.Sleep(100);
 
-            Thread th2 = new Thread(() =>
+            //Thread th2 = new Thread(() =>
+            //{
+            //    int port = 5423;
+            //    try
+            //    {
+            //        var l = new AsynchronousUPDListner();
+            //        l.UdpDataReceived += AircraftControls;
+            //        _traffic.Add(l);
+            //        l.Start(port, 104);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.Message);
+            //    }
+            //});
+            //th2.Start();
+
+            Thread th3 = new Thread(() =>
             {
-                int port = 5423;
+                int port = 5425;
                 try
                 {
                     var l = new AsynchronousUPDListner();
-                    l.UdpDataReceived += AircraftControls;
+                    l.UdpDataReceived += CenterConsoleOutputData;
                     _traffic.Add(l);
-                    l.Start(port, 104);
+                    l.Start(port, 14);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
             });
-            th2.Start();
+            th3.Start();
         }
 
         private void HoloLensData(object sender, TcpDataReceivedEventArgs e)
@@ -202,6 +219,15 @@ namespace traffic.server.Manager
         {
             AircraftControlsData controlData = new AircraftControlsData(e.Data);
             if (controlData.APDisengageButton)
+            {
+                SendSpeechCommand(new NetworkSpeechCommand() { Text = "decided" });
+            }
+        }
+
+        private void CenterConsoleOutputData(object sender, UdpDataReceivedEventArgs e)
+        {
+            TUG2SimCenterConsoleOutputData controlData = new TUG2SimCenterConsoleOutputData(e.Data);
+            if (controlData.GoAroundButton)
             {
                 SendSpeechCommand(new NetworkSpeechCommand() { Text = "decided" });
             }
