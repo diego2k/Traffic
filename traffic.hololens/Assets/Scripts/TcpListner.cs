@@ -26,15 +26,26 @@ public class TcpListner : MonoBehaviour
 
     public static HoloLensResultMessage Results { get; set; }
 
-    public static int Points
+    public static string Points
     {
         get
         {
-            return (Results.Collide == ScenarioData.Collide ? 1 : 0) +
-            (ScenarioData.RightOfWay > 0 && Results.RightOfWay == ScenarioData.RightOfWay ? 1 : 0) +
-            (Results.Turn == ScenarioData.Turn ? 1 : 0) +
-            (Results.CompassTurn == ScenarioData.CompassTurn ? 1 : 0) +
-            (int)(Results.ScanningPatternResult * 100);
+            float pSca = (Results.CompassTurn == ScenarioData.CompassTurn ? 1 : 0);
+            if (ScenarioData.Collide)
+            {
+                float pCol = (Results.Collide == ScenarioData.Collide ? 1 : 0) +
+                (ScenarioData.RightOfWay > 0 && Results.RightOfWay == ScenarioData.RightOfWay ? 1 : 0) +
+                (Results.Turn == ScenarioData.Turn ? 1 : 0);
+
+                return string.Format("Scanning Training: {0:0}% \nCollision avoidance Training: {1:0}% \nCompass  Training: {2:0}%",
+                    Results.ScanningPatternResult * 100, (pCol / 3) * 100, pSca * 100);
+            }
+            else
+            {
+                float pCol = (Results.Collide == ScenarioData.Collide ? 1 : 0);
+                return string.Format("Scanning Training: {0:0}% \nCollision avoidance Training: {1:0}% \nCompass  Training: {2:0}%",
+                    Results.ScanningPatternResult * 100, pCol * 100, pSca * 100);
+            }
         }
     }
 
@@ -49,7 +60,7 @@ public class TcpListner : MonoBehaviour
     {
         try
         {
-            if(command.Text == "quit")
+            if (command.Text == "quit")
             {
 #if WINDOWS_UWP
                 SendResults().Wait();
@@ -86,7 +97,7 @@ public class TcpListner : MonoBehaviour
         IsScenarioDataValid = false;
         if (socket == null)
         {
-            Task.Run(async() =>
+            Task.Run(async () =>
             {
                 while (true)
                 {
@@ -133,7 +144,7 @@ public class TcpListner : MonoBehaviour
                         else if (env.type == typeof(ScenarioData).Name)
                         {
                             ScenarioData = JsonConvert.DeserializeObject<ScenarioData>(env.content);
-                            Debug.Log(env.content+ " " + ScenarioData.CompassTurn);
+                            Debug.Log(env.content + " " + ScenarioData.CompassTurn);
 
                             IsScenarioDataValid = true;
                             Results.SzenarioName = ScenarioData.Name;
