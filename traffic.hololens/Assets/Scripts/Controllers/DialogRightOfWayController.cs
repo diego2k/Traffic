@@ -40,7 +40,7 @@ public class DialogRightOfWayController : MonoBehaviour, ISpeechHandler
                 break;
             case "charlie":
                 {
-                    answer = 2;
+                    answer = 3;
                     _activeButton = button3;
                 }
                 break;
