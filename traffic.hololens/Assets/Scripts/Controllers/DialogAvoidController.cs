@@ -11,6 +11,7 @@ public class DialogAvoidController : MonoBehaviour, ISpeechHandler
     public Text Answer;
     public Button button1;
     public Button button2;
+    public Button button3;
     public GameObject nextDialog;
 
     public void OnSpeechKeywordRecognized(SpeechEventData eventData)
@@ -35,6 +36,12 @@ public class DialogAvoidController : MonoBehaviour, ISpeechHandler
                 {
                     answer = "R";
                     _activeButton = button2;
+                }
+                break;
+            case "none":
+                {
+                    answer = "N";
+                    _activeButton = button3;
                 }
                 break;
             default:

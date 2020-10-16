@@ -260,6 +260,9 @@
                     <Button Margin="5" Content="Right" 
                             Command="{Binding SendNetworkSpeechCommand}"
                             CommandParameter="right"/>
+                    <Button Margin="5" Content="None" 
+                            Command="{Binding SendNetworkSpeechCommand}"
+                            CommandParameter="none"/>
                     <Separator Margin="5"/>
 
                     <Button Margin="5" Content="Turn left" 
