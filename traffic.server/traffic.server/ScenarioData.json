@@ -3,7 +3,7 @@
     "Name": "Szenario A",
     "Collide": true,
     "RightOfWay": 1,
-    "Turn": "R",
+    "Turn": "N",
     "CompassCurrent": 50,
     "CompassTarget": "zero zero zero",
     "CompassTurn": "L",

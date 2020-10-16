@@ -24,7 +24,7 @@ public class DialogAvoidController : MonoBehaviour, ISpeechHandler
     public void SpeechCommands(string command)
     {
         string answer = string.Empty;
-        switch (command)
+        switch (command.ToLower())
         {
             case "left":
                 {
