@@ -3,8 +3,9 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+[Bb]in/
 Assets/AssetStoreTools*
-FlightPathVector.hololens/App
+traffic.hololens/App
 
 # Visual Studio cache directory
 .vs/
